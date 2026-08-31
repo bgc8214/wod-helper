@@ -1,4 +1,4 @@
-# 정적 호스팅에 필요한 것은 index.html + data/latest.* 뿐.
+# 배포에 필요한 것은 index.html + data/latest.* + data/archive/ + data/index.json.
 # 소스/문서/수집기/로그는 배포 번들에서 제외한다.
 collector/
 scripts/
@@ -6,6 +6,7 @@ docs/
 logs/
 data/wod-*.json
 data/movements.json
+data/videos.json
 data/unmatched.log
 *.md
 .env.example

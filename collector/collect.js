@@ -77,7 +77,7 @@ async function main() {
     tomorrow: ymd(new Date(today.getTime() + 86400000)),
     dates,
     days,
-    dayFocus: Object.fromEntries(dates.map(d => [d, analyzeDay(days[d])])),
+    dayFocus: Object.fromEntries(dates.map(d => [d, analyzeDay(days[d], HIGHLIGHT_CATEGORY)])),
     stats: buildStats(),
   };
 
@@ -87,7 +87,8 @@ async function main() {
   // 운동 사전은 여기 한 번만 실어 아카이브가 movementKey 로 조인하게 한다.
   fs.writeFileSync(path.join(DATA_DIR, 'latest.js'),
     'window.WOD_DATA = ' + JSON.stringify(payload) + ';\n' +
-    'window.WOD_DICT = ' + JSON.stringify(slimDict()) + ';\n');
+    'window.WOD_DICT = ' + JSON.stringify(slimDict()) + ';\n' +
+    'window.WOD_VIDEOS = ' + JSON.stringify(loadVideos()) + ';\n');
   writeIndex();
   log(`[collect] 저장: latest.json/js, 아카이브 ${touchedMonths.join(', ')}`);
 
@@ -192,6 +193,24 @@ function stripMovements(steps) {
   }
 }
 
+/** 운동별 시연 영상 (scripts/fetch-videos.js 산출물, 없으면 빈 객체) */
+function loadVideos() {
+  const f = path.join(DATA_DIR, 'videos.json');
+  if (!fs.existsSync(f)) return {};
+  try {
+    const v = JSON.parse(fs.readFileSync(f, 'utf8'));
+    const out = {};
+    for (const key of Object.keys(dict.movements)) {
+      // 파생 동작(빈 바 프론트 스쿼트 등)은 기본 동작 영상을 쓴다
+      const src = v[dict.movements[key].videoOf || key] || v[key];
+      if (!src) continue;
+      out[key] = { id: src.id, title: src.title, author: src.author,
+                   start: src.start || 0, alts: src.alts || [] };
+    }
+    return out;
+  } catch { return {}; }
+}
+
 /** 웹에 실을 슬림 사전 (aliases 는 매칭용이라 제외) */
 function slimDict() {
   const out = {};
@@ -265,7 +284,10 @@ function writeIndex() {
   writeJson(path.join(DATA_DIR, 'index.json'), index);
 }
 
-/** 아카이브 기반 최근 28일 통계 (운동 빈도·부위 분포) */
+/**
+ * 아카이브 기반 최근 28일 통계 (운동 빈도·부위 분포).
+ * 오너 관심 수업(HIGHLIGHT_CATEGORY = DIET/SWEAT CAMP)만 집계한다.
+ */
 function buildStats(windowDays = 28) {
   if (!fs.existsSync(ARCHIVE_DIR)) return null;
   const end = new Date();
@@ -285,8 +307,10 @@ function buildStats(windowDays = 28) {
     try { a = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { continue; }
     for (const [date, wods] of Object.entries(a.days || {})) {
       if (date < from || date > to) continue;
+      const target = wods.filter(w => w.categoryIdx === HIGHLIGHT_CATEGORY);
+      if (!target.length) continue;
       dayCount++;
-      for (const w of wods) {
+      for (const w of target) {
         wodCount++;
         if (w.category) categoryCount.set(w.category, (categoryCount.get(w.category) || 0) + 1);
         for (const p of w.focus?.parts || []) {
@@ -311,6 +335,8 @@ function buildStats(windowDays = 28) {
   return {
     windowDays,
     from, to,
+    categoryIdx: HIGHLIGHT_CATEGORY,
+    categoryName: [...categoryCount.keys()][0] || null,
     dayCount, wodCount,
     topMovements: [...movementCount.values()].sort((a, b) => b.count - a.count).slice(0, 12),
     parts: [...partCount.entries()]
