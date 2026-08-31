@@ -82,9 +82,21 @@ test('parseWod: 최장 별칭 우선 (EMPTY BAR FRONT SQUAT vs FRONT SQUAT)', ()
 });
 
 test('parseWod: 미등록 용어는 unmatched 로', () => {
-  const r = parseWod('METCON\nFOR TIME\nASSAULT BIKE 20 CAL', dict);
-  assert.ok(r.unmatched.includes('ASSAULT BIKE 20 CAL'));
+  const r = parseWod('METCON\nFOR TIME\nSLED PUSH 20 M', dict);
+  assert.ok(r.unmatched.includes('SLED PUSH 20 M'));
   assert.strictEqual(r.sections[0].items[0].movement, null);
+});
+
+test('parseWod: 사전 보강분 매칭 (ASSAULT BIKE → BIKE)', () => {
+  const r = parseWod('METCON\nFOR TIME\nASSAULT BIKE 20 CAL', dict);
+  assert.strictEqual(r.sections[0].items[0].movementKey, 'BIKE');
+});
+
+test('movements: 모든 운동에 parts/patterns 태그가 있다', () => {
+  for (const [key, m] of Object.entries(dict.movements)) {
+    assert.ok(Array.isArray(m.parts) && m.parts.length > 0, `${key}: parts 없음`);
+    assert.ok(Array.isArray(m.patterns) && m.patterns.length > 0, `${key}: patterns 없음`);
+  }
 });
 
 test('parseWod: 별칭 매칭 (C2B → CHEST TO BAR)', () => {
