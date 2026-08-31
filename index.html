@@ -95,9 +95,11 @@ body::after{
 .pcat{font-family:var(--disp);font-size:15px;letter-spacing:.03em;color:var(--volt)}
 .ptimes{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--tx3);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46%}
-.stage{position:relative;min-height:430px;padding:12px 12px 8px}
-.card{position:absolute;inset:12px 12px 8px;opacity:0;transform:translateY(14px) scale(.985);
-  transition:opacity .5s var(--ease),transform .5s var(--ease);pointer-events:none}
+/* 카드를 같은 그리드 셀에 겹쳐 쌓는다 — 높이가 내용을 따라가 잘리거나 겹치지 않는다 */
+.stage{position:relative;display:grid;padding:12px 12px 8px}
+.card{grid-area:1/1;opacity:0;transform:translateY(14px) scale(.985);
+  transition:opacity .5s var(--ease),transform .5s var(--ease);
+  pointer-events:none;min-width:0}
 .card.on{opacity:1;transform:none;pointer-events:auto}
 
 /* 영상 무대 — 16:9, 상단 시네마틱 */
@@ -353,7 +355,7 @@ footer .r{margin-left:auto}
   </section>
 </div>
 
-<div class="railwrap" id="railwrap"><div class="wrap" style="padding:0">
+<div class="railwrap" id="railwrap"><div class="wrap">
   <div class="rail" id="rail"></div>
 </div></div>
 
