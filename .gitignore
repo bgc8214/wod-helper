@@ -12,3 +12,4 @@ node_modules/
 
 # 수집 산출물 중 날짜별 스냅샷은 커밋하지 않음(latest.json/latest.js 만 배포에 사용)
 data/wod-20*.json
+.vercel
