@@ -15,4 +15,17 @@ mkdir -p logs
 TS="$(date '+%Y-%m-%d %H:%M:%S')"
 echo "[$TS] collect start" >> logs/collect.log
 "$NODE" collector/collect.js >> logs/collect.log 2>&1 || echo "[$TS] collect FAILED (기존 데이터 유지)" >> logs/collect.log
+
+# 데이터가 갱신됐으면 GitHub Pages 로 자동 배포 (변경 없으면 아무것도 안 함)
+if ! git diff --quiet -- data/latest.json data/latest.js 2>/dev/null; then
+  git add data/latest.json data/latest.js
+  if git commit -m "chore: WOD 데이터 자동 갱신 ($TS)" >> logs/collect.log 2>&1; then
+    if git push origin main >> logs/collect.log 2>&1; then
+      echo "[$TS] pushed → Pages 배포됨" >> logs/collect.log
+    else
+      echo "[$TS] push FAILED (다음 실행 때 재시도)" >> logs/collect.log
+    fi
+  fi
+fi
+
 echo "[$TS] collect done" >> logs/collect.log
