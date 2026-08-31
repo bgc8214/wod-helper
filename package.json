@@ -1,0 +1,13 @@
+{
+  "name": "wod-helper",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Stadion 크로스핏 오늘/내일 WOD 를 자동 수집해 한글 설명+영상으로 보여주는 개인용 페이지",
+  "type": "commonjs",
+  "scripts": {
+    "collect": "node collector/collect.js",
+    "test": "node --test",
+    "serve": "node -e \"const h=require('http'),f=require('fs'),p=require('path');h.createServer((q,s)=>{let u=q.url==='/'?'/web/index.html':q.url;u=u.split('?')[0];const fp=p.join(__dirname,u);f.readFile(fp,(e,d)=>{if(e){s.writeHead(404);return s.end('404')}const t={'.html':'text/html','.js':'text/javascript','.json':'application/json'}[p.extname(fp)]||'text/plain';s.writeHead(200,{'content-type':t});s.end(d)})}).listen(8787,()=>console.log('http://localhost:8787'))\""
+  },
+  "engines": { "node": ">=18" }
+}

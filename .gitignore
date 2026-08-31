@@ -1,0 +1,14 @@
+# 자격증명·설정
+.env
+
+# 로그
+logs/
+data/unmatched.log
+
+# OS / 에디터
+.DS_Store
+*.swp
+node_modules/
+
+# 수집 산출물 중 날짜별 스냅샷은 커밋하지 않음(latest.json/latest.js 만 배포에 사용)
+data/wod-20*.json
