@@ -53,13 +53,21 @@ function analyzeFocus(sections) {
 }
 
 /**
- * 하루치(여러 WOD)를 합산한 포커스. 카테고리별로 성격이 달라
- * 특정 WOD 하나만 보고 싶을 때는 analyzeFocus 를 개별 호출한다.
+ * 하루치 포커스. 수업마다 성격이 완전히 달라(크로스핏 vs MMA) 전체를 합치면
+ * 의미가 흐려지므로, 관심 카테고리(onlyCategoryIdx)만 집계한다.
+ * 해당 수업이 없는 날은 하이라이트 WOD → 첫 WOD 순으로 대체한다.
  */
-function analyzeDay(wods) {
+function analyzeDay(wods, onlyCategoryIdx) {
   const parts = new Map();
   const patterns = new Map();
-  for (const w of wods || []) {
+  let target = wods || [];
+  if (onlyCategoryIdx != null) {
+    const hit = target.filter(w => w.categoryIdx === onlyCategoryIdx);
+    target = hit.length ? hit
+      : (target.filter(w => w.highlight).length ? target.filter(w => w.highlight)
+        : target.slice(0, 1));
+  }
+  for (const w of target) {
     for (const p of w.focus?.parts || []) add(parts, p.name, p.value);
     for (const p of w.focus?.patterns || []) add(patterns, p.name, p.value);
   }
@@ -70,6 +78,7 @@ function analyzeDay(wods) {
     patterns: patternList,
     type: classify(patternList),
     summary: summarize(partList, patternList),
+    basis: target.map(w => w.category || w.name),   // 무엇을 기준으로 냈는지
   };
 }
 

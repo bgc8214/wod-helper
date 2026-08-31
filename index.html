@@ -95,10 +95,44 @@ body::after{
 .pcat{font-family:var(--disp);font-size:15px;letter-spacing:.03em;color:var(--volt)}
 .ptimes{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--tx3);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46%}
-.stage{position:relative;min-height:224px;padding:16px 16px 8px}
-.card{position:absolute;inset:16px 16px 8px;opacity:0;transform:translateY(14px) scale(.985);
+.stage{position:relative;min-height:430px;padding:12px 12px 8px}
+.card{position:absolute;inset:12px 12px 8px;opacity:0;transform:translateY(14px) scale(.985);
   transition:opacity .5s var(--ease),transform .5s var(--ease);pointer-events:none}
 .card.on{opacity:1;transform:none;pointer-events:auto}
+
+/* 영상 무대 — 16:9, 상단 시네마틱 */
+.vid{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;
+  background:#000 center/cover no-repeat;margin-bottom:13px;
+  box-shadow:0 20px 44px -26px rgba(0,0,0,.95)}
+/* 유튜브 제목·컨트롤이 프레임 밖으로 나가도록 확대 — 동작 화면만 남는다 */
+.vid iframe,.vid .ytslot{position:absolute;top:50%;left:50%;width:100%;height:100%;border:0;
+  transform:translate(-50%,-50%) scale(1.56);pointer-events:none}
+/* YT API 가 슬롯 div 를 iframe 으로 바꾸면 중첩 변환이 되지 않도록 초기화 */
+.vid .ytslot iframe{position:absolute;inset:0;top:0;left:0;transform:none;width:100%;height:100%}
+/* 위아래 남는 UI 를 덮는 얇은 마스크 */
+.vid .shade{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(6,7,8,.85) 0%,transparent 13%,
+             transparent 84%,rgba(6,7,8,.9) 100%)}
+.vid .badge{position:absolute;top:9px;left:10px;z-index:2;font-family:var(--mono);font-size:9px;
+  letter-spacing:.12em;padding:4px 8px;border-radius:6px;color:#0b0d07;background:var(--volt);
+  text-transform:uppercase}
+.vid.noplay{background:var(--ink4)}
+.vid.noplay::after{content:'▶';position:absolute;inset:0;display:grid;place-items:center;
+  font-size:30px;color:rgba(255,255,255,.35)}
+/* iframe 이 뜨기 전 썸네일 위 로딩 표시 */
+.vid .spin{position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;
+  border:2px solid rgba(255,255,255,.22);border-top-color:var(--volt);border-radius:50%;
+  animation:spin .8s linear infinite;z-index:2}
+.vid.ready .spin{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* 캡션은 영상 밖 — 겹침 없이 크고 선명하게 */
+.card .cap{margin-bottom:11px}
+.card .cap .ko{font-family:var(--disp);font-size:clamp(27px,7.6vw,37px);line-height:1.03;
+  letter-spacing:-.005em;word-break:keep-all}
+.card .cap .en{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--tx3);
+  text-transform:uppercase;margin-top:4px;display:flex;gap:7px;align-items:center}
+.card .cap .en b{color:var(--volt-dim);font-weight:500}
+
 .card .sec{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--tx3);
   text-transform:uppercase;margin-bottom:9px}
 .card .sec b{color:var(--volt-dim)}
@@ -106,8 +140,8 @@ body::after{
   letter-spacing:-.005em;margin-bottom:5px;word-break:keep-all}
 .card .en{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--tx3);
   text-transform:uppercase;margin-bottom:11px}
-.card .desc{font-size:13.5px;color:var(--tx2);line-height:1.62;margin-bottom:12px;
-  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.card .desc{font-size:13px;color:var(--tx2);line-height:1.6;margin-bottom:11px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:6px;
   background:var(--ink4);color:var(--tx2);border:1px solid var(--line)}
@@ -198,10 +232,27 @@ body::after{
 .mv .nm small{display:block;font-family:var(--mono);font-size:9.5px;color:var(--tx3);
   font-weight:500;letter-spacing:.06em;margin-top:1px;text-transform:uppercase}
 .mv .rp{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--flame);flex-shrink:0}
-.mv .yt{color:var(--tx3);text-decoration:none;font-size:12px;flex-shrink:0;transition:.2s}
-.mv .yt:hover{color:var(--flame)}
+.mv .yt{color:var(--tx3);background:none;border:1px solid var(--line);border-radius:7px;
+  font-size:11px;flex-shrink:0;transition:.2s var(--ease);cursor:pointer;padding:3px 8px;
+  font-family:var(--mono);letter-spacing:.04em}
+.mv .yt:hover,.mv .yt.on{color:var(--volt);border-color:var(--volt);background:rgba(212,255,64,.08)}
 .mv.unknown .nm{color:var(--tx2);font-weight:500;font-size:13.5px}
 .mvdesc{font-size:12px;color:var(--tx3);line-height:1.55;padding:0 0 8px 0;margin-top:-3px}
+/* 인라인 영상 — 썸네일 파사드, 탭하면 재생 */
+.mvvid{max-height:0;overflow:hidden;transition:max-height .45s var(--ease2)}
+.mvvid.on{max-height:340px}
+.mvvid .frame{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;
+  margin:2px 0 12px;background:#000 center/cover no-repeat;cursor:pointer}
+.mvvid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.mvvid .play{position:absolute;inset:0;display:grid;place-items:center;
+  background:linear-gradient(to top,rgba(6,7,8,.7),rgba(6,7,8,.15))}
+.mvvid .play i{width:46px;height:46px;border-radius:50%;background:rgba(212,255,64,.94);
+  color:#0b0d07;display:grid;place-items:center;font-size:15px;font-style:normal;
+  transition:.2s var(--ease);padding-left:3px}
+.mvvid .frame:hover .play i{transform:scale(1.12)}
+.mvvid .ttl{position:absolute;left:9px;right:9px;bottom:7px;font-family:var(--mono);
+  font-size:9px;color:rgba(255,255,255,.72);white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;text-shadow:0 1px 8px #000}
 
 /* 스케일링 */
 .scales{margin-top:14px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
@@ -322,7 +373,18 @@ footer .r{margin-left:auto}
 /* ═══════════════ 상태 ═══════════════ */
 const D = window.WOD_DATA || null;
 const DICT = window.WOD_DICT || {};   // movementKey → {ko,desc,youtube,parts,patterns}
+const VID = window.WOD_VIDEOS || {};  // movementKey → {id,title,author,alts}
 const mvOf = key => (key && DICT[key]) || null;
+const vidOf = key => (key && VID[key]) || null;
+const thumb = id => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+/** 무음 자동재생 임베드. 인트로를 건너뛰고 동작 구간부터 반복 재생 */
+const embedSrc = (v, auto) => {
+  const id = typeof v === 'string' ? v : v.id;
+  const st = (typeof v === 'object' && v.start) || 0;
+  return `https://www.youtube-nocookie.com/embed/${id}?autoplay=${auto?1:0}&mute=1&loop=1&playlist=${id}`
+    + `&controls=0&modestbranding=1&playsinline=1&rel=0&iv_load_policy=3&disablekb=1&fs=0`
+    + (st ? `&start=${st}` : '');
+};
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const CARD_MS = 3400;
 const DOW = ['일','월','화','수','목','금','토'];
@@ -428,11 +490,19 @@ function renderPlayer(wods){
       ...(m.patterns||[]).slice(0,2).map(x=>`<span class="chip">${esc(x)}</span>`),
     ];
     if(c.it.reps) chips.unshift(`<span class="chip reps">${esc(c.it.reps)}</span>`);
+    const v = vidOf(c.it.movementKey);
     const card = el('div','card'+(i===0?' on':''));
     card.innerHTML = `
+      <div class="vid${v?'':' noplay'}" data-key="${esc(c.it.movementKey)}"
+           style="${v?`background-image:url('${esc(thumb(v.id))}')`:''}">
+        <div class="shade"></div>
+        ${v?'<div class="badge">시연</div>':''}
+      </div>
+      <div class="cap">
+        <div class="ko">${esc(m.ko)}</div>
+        <div class="en">${esc(c.it.movementKey)}${v?` <b>· ${esc(v.author||'')}</b>`:''}</div>
+      </div>
       <div class="sec"><b>${esc(c.sec)}</b> · ${esc(c.secEn)}</div>
-      <div class="ko">${esc(m.ko)}</div>
-      <div class="en">${esc(c.it.movementKey)}</div>
       <div class="desc">${esc(m.desc||'')}</div>
       <div class="chips">${chips.join('')}</div>`;
     stage.appendChild(card);
@@ -447,7 +517,76 @@ function renderPlayer(wods){
   player = {cards, i:0, playing:!REDUCED, timer:null, stage, dots};
   $('#playToggle',p).onclick = togglePlay;
   stage.onclick = ()=>go((player.i+1)%cards.length, true);
+  mountVideo(0);
   if(!REDUCED) schedule(); else $('#playToggle',p).textContent='▶';
+}
+
+/* ── YouTube Player API — 자동재생을 브라우저에 명시적으로 요청한다.
+   src 의 autoplay=1 만으로는 정책에 따라 정지 상태로 남을 수 있어,
+   onReady 에서 mute() → playVideo() 를 직접 호출한다. ── */
+let ytReady = false; const ytQueue = [];
+window.onYouTubeIframeAPIReady = ()=>{ ytReady = true; ytQueue.splice(0).forEach(f=>f()); };
+(function loadYT(){
+  if(window.YT?.Player){ ytReady = true; return; }
+  const s = document.createElement('script');
+  s.src = 'https://www.youtube.com/iframe_api';
+  s.async = true;
+  s.onerror = ()=>{ ytReady = false; ytQueue.splice(0).forEach(f=>f(true)); }; // 폴백 실행
+  document.head.appendChild(s);
+})();
+
+let heroPlayer = null;   // 현재 히어로 카드의 YT.Player
+
+/** 활성 카드에만 플레이어를 붙인다(동시 로드 방지). 나머지는 썸네일 유지 */
+function mountVideo(i){
+  if(!player) return;
+  // 이전 플레이어 정리 — 배터리·데이터 절약
+  if(heroPlayer){ try{ heroPlayer.destroy(); }catch{} heroPlayer = null; }
+  [...player.stage.children].forEach((card,k)=>{
+    const box = card.querySelector('.vid');
+    if(!box) return;
+    if(k!==i){ box.querySelector('iframe,.ytslot')?.remove(); box.classList.remove('ready'); return; }
+    const v = vidOf(box.dataset.key);
+    if(!v) return;
+    box.querySelector('iframe,.ytslot')?.remove();
+    box.classList.remove('ready');
+    if(!box.querySelector('.spin')) box.appendChild(el('div','spin'));
+
+    const slot = el('div','ytslot');
+    box.insertBefore(slot, box.firstChild);
+    const build = fallback => {
+      if(fallback || !window.YT?.Player){ plainIframe(box, slot, v); return; }
+      try{
+        heroPlayer = new YT.Player(slot, {
+          videoId: v.id,
+          host: 'https://www.youtube-nocookie.com',
+          playerVars: {autoplay:1, mute:1, controls:0, modestbranding:1, playsinline:1,
+                       rel:0, iv_load_policy:3, disablekb:1, fs:0, start:v.start||0},
+          events:{
+            onReady: e=>{ try{ e.target.mute(); e.target.playVideo(); }catch{}
+                          box.classList.add('ready'); },
+            // 끝나면 시작 지점으로 되감아 반복
+            onStateChange: e=>{ if(e.data === YT.PlayerState.ENDED){
+                try{ e.target.seekTo(v.start||0); e.target.playVideo(); }catch{} } },
+            onError: ()=> plainIframe(box, box.querySelector('.ytslot')||slot, v),
+          },
+        });
+      }catch{ plainIframe(box, slot, v); }
+    };
+    ytReady ? build() : ytQueue.push(build);
+  });
+}
+
+/** API 를 못 쓸 때의 폴백 — 평범한 자동재생 임베드 */
+function plainIframe(box, slot, v){
+  slot?.remove();
+  if(box.querySelector('iframe')) return;
+  const f = document.createElement('iframe');
+  f.src = embedSrc(v, true);
+  f.allow = 'autoplay; encrypted-media; picture-in-picture';
+  f.setAttribute('title','운동 시연 영상');
+  f.onload = ()=>box.classList.add('ready');
+  box.insertBefore(f, box.firstChild);
 }
 
 function go(i, manual){
@@ -458,6 +597,7 @@ function go(i, manual){
   dots.children[player.i]?.classList.add('done');
   player.i = i;
   stage.children[i]?.classList.add('on');
+  mountVideo(i);
   [...dots.children].forEach((d,k)=>{
     d.classList.toggle('done', k<i);
     d.classList.remove('act');
@@ -554,11 +694,20 @@ function renderStep(st){
     const items = (s.items||[]).map(it=>{
       const m = mvOf(it.movementKey);
       if(!m) return `<div class="mv unknown"><div class="nm">${esc(it.raw)}</div></div>`;
+      const v = vidOf(it.movementKey);
+      const btn = v
+        ? `<button class="yt" data-key="${esc(it.movementKey)}" aria-label="${esc(m.ko)} 시연 영상">▶ 영상</button>`
+        : `<a class="yt" href="${esc(m.youtube||'#')}" target="_blank" rel="noopener">검색</a>`;
       return `<div class="mv">
           <div class="nm">${esc(m.ko)}<small>${esc(it.movementKey)}</small></div>
           ${it.reps?`<div class="rp">${esc(it.reps)}</div>`:''}
-          <a class="yt" href="${esc(m.youtube||'#')}" target="_blank" rel="noopener" aria-label="영상 검색">▷</a>
-        </div>${m.desc?`<div class="mvdesc">${esc(m.desc)}</div>`:''}`;
+          ${btn}
+        </div>${m.desc?`<div class="mvdesc">${esc(m.desc)}</div>`:''}
+        ${v?`<div class="mvvid"><div class="frame" data-key="${esc(it.movementKey)}"
+             style="background-image:url('${esc(thumb(v.id))}')">
+             <div class="play"><i>▶</i></div>
+             <div class="ttl">${esc(v.title||'')} · ${esc(v.author||'')}</div>
+           </div></div>`:''}`;
     }).join('');
     return `<div class="sec${key?' key':''}">
         <h4>${esc(s.nameKo||s.name)}</h4>
@@ -581,6 +730,25 @@ function renderStep(st){
 }
 
 function wireStep(root){
+  // 운동 영상: ▶ 버튼으로 펼치고, 썸네일을 누르면 그때 iframe 로드(파사드)
+  root.querySelectorAll('.mv .yt[data-key]').forEach(btn=>{
+    btn.onclick = e=>{
+      e.stopPropagation();
+      const mv = btn.closest('.mv');
+      const box = mv.nextElementSibling?.nextElementSibling?.classList.contains('mvvid')
+        ? mv.nextElementSibling.nextElementSibling
+        : mv.nextElementSibling?.classList.contains('mvvid') ? mv.nextElementSibling : null;
+      if(!box) return;
+      const opening = !box.classList.contains('on');
+      box.classList.toggle('on', opening);
+      btn.classList.toggle('on', opening);
+      if(opening) playFrame(box.querySelector('.frame'));
+      else box.querySelector('iframe')?.remove();
+    };
+  });
+  root.querySelectorAll('.mvvid .frame').forEach(f=>{
+    f.onclick = e=>{ e.stopPropagation(); playFrame(f); };
+  });
   root.querySelectorAll('.rawtoggle').forEach(b=>{
     b.onclick = e=>{ e.stopPropagation();
       const raw = b.nextElementSibling; raw.classList.toggle('on');
@@ -597,12 +765,26 @@ function wireStep(root){
   });
 }
 
+/** 썸네일 파사드 → 실제 iframe 로 교체(무음 자동재생) */
+function playFrame(frame){
+  if(!frame || frame.querySelector('iframe')) return;
+  const v = vidOf(frame.dataset.key); if(!v) return;
+  const f = document.createElement('iframe');
+  f.src = embedSrc(v, true);
+  f.allow = 'autoplay; encrypted-media; picture-in-picture';
+  f.setAttribute('title','운동 시연 영상');
+  frame.insertBefore(f, frame.firstChild);
+  frame.querySelector('.play')?.remove();
+}
+
 /* ═══════════════ 부위 분포 ═══════════════ */
 function renderFocus(dayFocus){
   const host = $('#focusPanel'); host.innerHTML='';
   if(!dayFocus?.parts?.length) return;
   const t = el('div','stitle');
-  t.innerHTML = `<h2>Focus</h2><div class="rule"></div><div class="cnt">${esc(dayFocus.type||'')}</div>`;
+  const basis = (dayFocus.basis||[])[0] || '';
+  t.innerHTML = `<h2>Focus</h2><div class="rule"></div>
+    <div class="cnt">${esc(basis)}${dayFocus.type?' · '+esc(dayFocus.type):''}</div>`;
   host.appendChild(t);
   const box = el('div','bars rv');
   const max = dayFocus.parts[0].value || 1;
@@ -620,7 +802,7 @@ function renderStats(){
   const s = D?.stats; if(!s) return;
   const t = el('div','stitle');
   t.innerHTML = `<h2>Last ${s.windowDays} Days</h2><div class="rule"></div>
-    <div class="cnt">${esc(s.from)} ~ ${esc(s.to)}</div>`;
+    <div class="cnt">${esc(s.categoryName||'')}</div>`;
   host.appendChild(t);
 
   const box = el('div','stats rv');
@@ -673,10 +855,16 @@ async function select(date){
   observeAll();
 }
 
-/** 아카이브에 dayFocus 가 없을 때 클라이언트에서 합산 */
+/** 아카이브에 dayFocus 가 없을 때 클라이언트에서 합산(관심 수업 기준) */
 function computeFocus(wods){
   const parts = new Map(), pats = new Map();
-  for(const w of wods){
+  const hi = D?.highlightCategory;
+  let target = wods;
+  if(hi != null){
+    const hit = wods.filter(w=>w.categoryIdx===hi);
+    target = hit.length ? hit : (wods.filter(w=>w.highlight).length ? wods.filter(w=>w.highlight) : wods.slice(0,1));
+  }
+  for(const w of target){
     for(const p of w.focus?.parts||[]) parts.set(p.name,(parts.get(p.name)||0)+p.value);
     for(const p of w.focus?.patterns||[]) pats.set(p.name,(pats.get(p.name)||0)+p.value);
   }
@@ -687,6 +875,7 @@ function computeFocus(wods){
   };
   const pl=rank(parts), ptl=rank(pats);
   return {parts:pl, patterns:ptl, type:null,
+    basis: target.map(w=>w.category||w.name),
     summary: pl.length? pl.slice(0,2).map(p=>p.name).join('·')+' 중심' : null};
 }
 
