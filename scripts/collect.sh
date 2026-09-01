@@ -12,6 +12,10 @@ NODE="$(command -v node || echo /usr/local/bin/node)"
 [ -x "$NODE" ] || NODE=/opt/homebrew/bin/node
 VERCEL="$(command -v vercel || echo /opt/homebrew/bin/vercel)"
 
+# vercel CLI 는 `#!/usr/bin/env node` 로 시작한다. launchd 는 PATH 가 최소라
+# node 를 못 찾아 배포가 실패하므로 node 디렉터리를 PATH 앞에 붙인다.
+export PATH="$(dirname "$NODE"):$PATH"
+
 # .env 에 VERCEL_TOKEN 이 있으면 launchd 세션에서도 배포 인증에 사용(선택)
 if [ -f .env ]; then
   VT="$(grep -E '^VERCEL_TOKEN=' .env | head -1 | cut -d= -f2-)"
