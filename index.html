@@ -95,12 +95,18 @@ body::after{
 .pcat{font-family:var(--disp);font-size:15px;letter-spacing:.03em;color:var(--volt)}
 .ptimes{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--tx3);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46%}
-/* 카드를 같은 그리드 셀에 겹쳐 쌓는다 — 높이가 내용을 따라가 잘리거나 겹치지 않는다 */
-.stage{position:relative;display:grid;padding:12px 12px 8px}
-.card{grid-area:1/1;opacity:0;transform:translateY(14px) scale(.985);
-  transition:opacity .5s var(--ease),transform .5s var(--ease);
-  pointer-events:none;min-width:0}
-.card.on{opacity:1;transform:none;pointer-events:auto}
+/* 스와이프 트랙 — 자동 전환 대신 사용자가 넘긴다.
+   다음 카드가 살짝 보이게(peek) 해서 "옆에 더 있다"를 인지시킨다. */
+.track{display:flex;gap:12px;overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;scroll-behavior:smooth;
+  padding:12px;scroll-padding-left:12px;scrollbar-width:none;
+  overscroll-behavior-x:contain;position:relative}
+.track::-webkit-scrollbar{display:none}
+.card{flex:0 0 87%;scroll-snap-align:center;min-width:0;
+  opacity:.42;transform:scale(.975);
+  transition:opacity .35s var(--ease),transform .35s var(--ease)}
+.card.on{opacity:1;transform:none}
+@media (min-width:560px){ .card{flex-basis:88%} }
 
 /* 영상 무대 — 16:9, 상단 시네마틱 */
 .vid{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;
@@ -121,6 +127,20 @@ body::after{
 .vid.noplay{background:var(--ink4)}
 .vid.noplay::after{content:'▶';position:absolute;inset:0;display:grid;place-items:center;
   font-size:30px;color:rgba(255,255,255,.35)}
+/* 탭 = 재생/일시정지 (넘김 아님). 정지 상태에서만 아이콘 노출 */
+.card.on .vid{cursor:pointer}
+.vid .tap{position:absolute;inset:0;z-index:3;display:grid;place-items:center;
+  opacity:0;transition:opacity .25s var(--ease);background:rgba(6,7,8,.34)}
+.vid.paused .tap{opacity:1}
+.vid .tap i{width:52px;height:52px;border-radius:50%;background:rgba(212,255,64,.95);
+  color:#0b0d07;display:grid;place-items:center;font-size:17px;font-style:normal;
+  padding-left:4px;box-shadow:0 6px 24px rgba(0,0,0,.5)}
+.vid .hint{position:absolute;right:9px;bottom:8px;z-index:3;font-family:var(--mono);
+  font-size:8.5px;letter-spacing:.08em;color:rgba(255,255,255,.62);
+  background:rgba(0,0,0,.46);padding:3px 7px;border-radius:5px;backdrop-filter:blur(4px);
+  opacity:0;transition:opacity .3s var(--ease);pointer-events:none}
+.card.on .vid .hint{opacity:1}
+.vid.paused .hint{opacity:0}
 /* iframe 이 뜨기 전 썸네일 위 로딩 표시 */
 .vid .spin{position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;
   border:2px solid rgba(255,255,255,.22);border-top-color:var(--volt);border-radius:50%;
@@ -150,20 +170,31 @@ body::after{
 .chip.p{color:var(--volt);border-color:rgba(212,255,64,.3);background:rgba(212,255,64,.07)}
 .chip.reps{color:var(--flame);border-color:rgba(255,77,32,.3);background:rgba(255,77,32,.07);
   font-family:var(--mono)}
-/* 재생 컨트롤 */
-.pctrl{display:flex;align-items:center;gap:10px;padding:6px 16px 14px;position:relative}
-.dots{display:flex;gap:5px;flex:1;flex-wrap:wrap}
-.dot{height:3px;flex:1;min-width:8px;max-width:38px;background:var(--line2);
-  border-radius:2px;overflow:hidden;cursor:pointer;position:relative;border:0;padding:0}
-.dot i{position:absolute;inset:0;background:var(--volt);transform:scaleX(0);
-  transform-origin:0 50%;display:block}
-.dot.done i{transform:scaleX(1)}
-.dot.act i{animation:fill var(--dur,3400ms) linear forwards}
-@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-.pbtn{width:30px;height:30px;border-radius:50%;border:1px solid var(--line2);
-  background:var(--ink4);color:var(--tx2);cursor:pointer;display:grid;place-items:center;
-  font-size:11px;transition:.2s var(--ease);flex-shrink:0}
-.pbtn:hover,.pbtn:active{border-color:var(--volt);color:var(--volt);transform:scale(1.08)}
+/* ── 하단 썸네일 레일 — 다음에 뭐가 오는지 미리 보고 바로 점프 ── */
+.pfoot{display:flex;align-items:center;gap:9px;padding:2px 14px 13px}
+.thumbs{display:flex;gap:6px;overflow-x:auto;flex:1;scrollbar-width:none;padding:2px 0}
+.thumbs::-webkit-scrollbar{display:none}
+.th{flex:0 0 auto;width:52px;border:0;padding:0;background:none;cursor:pointer;
+  border-radius:8px;overflow:hidden;position:relative;opacity:.5;
+  transition:opacity .22s var(--ease),transform .22s var(--ease)}
+.th img{width:100%;height:30px;object-fit:cover;display:block;border-radius:8px;
+  border:1.5px solid transparent;transition:border-color .22s}
+.th span{display:block;font-size:8.5px;color:var(--tx3);margin-top:3px;line-height:1.2;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.th:hover{opacity:.85}
+.th.on{opacity:1;transform:translateY(-1px)}
+.th.on img{border-color:var(--volt)}
+.th.on span{color:var(--volt)}
+.counter{font-family:var(--mono);font-size:10.5px;color:var(--tx3);flex-shrink:0;
+  letter-spacing:.06em;padding-bottom:12px}
+.counter b{color:var(--tx);font-weight:700}
+/* 좌우 이동 버튼 — 포인터 환경에서만 */
+.navbtn{width:30px;height:30px;border-radius:50%;border:1px solid var(--line2);
+  background:var(--ink4);color:var(--tx2);cursor:pointer;display:none;place-items:center;
+  font-size:12px;transition:.2s var(--ease);flex-shrink:0;margin-bottom:12px}
+.navbtn:hover{border-color:var(--volt);color:var(--volt)}
+.navbtn:disabled{opacity:.3;cursor:default;border-color:var(--line2);color:var(--tx3)}
+@media (hover:hover) and (pointer:fine){ .navbtn{display:grid} }
 
 /* ── 날짜 레일 ── */
 .railwrap{position:sticky;top:49px;z-index:140;margin:20px 0 4px;
@@ -388,7 +419,6 @@ const embedSrc = (v, auto) => {
     + (st ? `&start=${st}` : '');
 };
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const CARD_MS = 3400;
 const DOW = ['일','월','화','수','목','금','토'];
 const cache = new Map();          // 'YYYY-MM' → archive json
 let INDEX = null;                 // data/index.json
@@ -402,8 +432,11 @@ const esc = s => String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>'
 const ymd = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 const parseD = s => {const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);};
 
+/** 수집 시점이 아니라 '보고 있는 지금'이 기준 — 배포가 늦어도 날짜가 어긋나지 않는다 */
+const TODAY = ymd(new Date());
+
 function relLabel(dateStr){
-  const t = parseD(D?.today || ymd(new Date()));
+  const t = parseD(TODAY);
   const d = parseD(dateStr);
   const diff = Math.round((d-t)/86400000);
   if(diff===0) return '오늘';
@@ -437,7 +470,7 @@ function renderHero(date, wods, dayFocus){
   $('#bigdate').textContent = `${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
   $('#dow').textContent = DOW[d.getDay()] + '요일';
   $('#rel').textContent = relLabel(date) + ' · ' + date;
-  $('#kicker').textContent = date === D?.today ? "TODAY'S SESSION" : 'SESSION';
+  $('#kicker').textContent = date === TODAY ? "TODAY'S SESSION" : 'SESSION';
 
   // 포커스 칩
   const fl = $('#focusline'); fl.innerHTML='';
@@ -452,10 +485,14 @@ function renderHero(date, wods, dayFocus){
   renderPlayer(wods);
 }
 
-/** 하이라이트 WOD(없으면 첫 WOD)의 운동들을 카드로 자동 재생 */
+/**
+ * 하이라이트 WOD 의 운동을 스와이프 캐러셀로 보여준다.
+ * 카드는 자동으로 넘어가지 않는다(사용자가 통제) — 대신 보고 있는 카드의
+ * 영상만 자동 재생한다. 탭은 '넘김'이 아니라 '재생/일시정지'다.
+ */
 function renderPlayer(wods){
   const host = $('#playerHost'); host.innerHTML='';
-  if(player?.timer){ clearTimeout(player.timer); player = null; }
+  teardownPlayer();
   if(!wods.length) return;
 
   const w = wods.find(x=>x.highlight) || wods[0];
@@ -477,28 +514,32 @@ function renderPlayer(wods){
       <div class="pcat">${esc(w.category||w.name)}</div>
       <div class="ptimes">${(w.times||[]).slice(0,5).join(' · ')}</div>
     </div>
-    <div class="stage" id="stage"></div>
-    <div class="pctrl">
-      <div class="dots" id="dots"></div>
-      <button class="pbtn" id="playToggle" aria-label="재생/일시정지">❚❚</button>
+    <div class="track" id="track" role="group" aria-label="운동 카드 — 좌우로 넘겨 보세요"></div>
+    <div class="pfoot">
+      <button class="navbtn" id="navPrev" aria-label="이전 운동">‹</button>
+      <div class="thumbs" id="thumbs"></div>
+      <button class="navbtn" id="navNext" aria-label="다음 운동">›</button>
+      <div class="counter" id="counter"></div>
     </div>`;
   host.appendChild(p);
 
-  const stage = $('#stage',p), dots = $('#dots',p);
+  const track = $('#track',p), thumbs = $('#thumbs',p);
   cards.forEach((c,i)=>{
-    const m = c.m;
+    const m = c.m, v = vidOf(c.it.movementKey);
     const chips = [
       ...(m.parts||[]).map(x=>`<span class="chip p">${esc(x)}</span>`),
       ...(m.patterns||[]).slice(0,2).map(x=>`<span class="chip">${esc(x)}</span>`),
     ];
     if(c.it.reps) chips.unshift(`<span class="chip reps">${esc(c.it.reps)}</span>`);
-    const v = vidOf(c.it.movementKey);
+
     const card = el('div','card'+(i===0?' on':''));
+    card.setAttribute('aria-label',`${i+1}/${cards.length} ${m.ko}`);
     card.innerHTML = `
       <div class="vid${v?'':' noplay'}" data-key="${esc(c.it.movementKey)}"
            style="${v?`background-image:url('${esc(thumb(v.id))}')`:''}">
         <div class="shade"></div>
         ${v?'<div class="badge">시연</div>':''}
+        ${v?'<div class="tap"><i>▶</i></div><div class="hint">탭 → 일시정지 · 옆으로 밀어 다음</div>':''}
       </div>
       <div class="cap">
         <div class="ko">${esc(m.ko)}</div>
@@ -507,20 +548,82 @@ function renderPlayer(wods){
       <div class="sec"><b>${esc(c.sec)}</b> · ${esc(c.secEn)}</div>
       <div class="desc">${esc(m.desc||'')}</div>
       <div class="chips">${chips.join('')}</div>`;
-    stage.appendChild(card);
+    track.appendChild(card);
 
-    const dot = el('button','dot'+(i===0?' act':''),'<i></i>');
-    dot.style.setProperty('--dur', CARD_MS+'ms');
-    dot.setAttribute('aria-label',`${i+1}번째 운동`);
-    dot.onclick = ()=>go(i,true);
-    dots.appendChild(dot);
+    // 영상 탭 = 재생/일시정지 (카드를 넘기지 않는다)
+    const box = card.querySelector('.vid');
+    if(v) box.onclick = e=>{ e.stopPropagation(); toggleVideo(i); };
+
+    const th = el('button','th'+(i===0?' on':''));
+    th.innerHTML = `${v?`<img src="${esc(thumb(v.id))}" alt="" loading="lazy">`
+                        :'<img alt="" style="background:var(--ink4)">'}
+                    <span>${esc(m.ko)}</span>`;
+    th.setAttribute('aria-label',`${m.ko} 로 이동`);
+    th.onclick = ()=>goTo(i);
+    thumbs.appendChild(th);
   });
 
-  player = {cards, i:0, playing:!REDUCED, timer:null, stage, dots};
-  $('#playToggle',p).onclick = togglePlay;
-  stage.onclick = ()=>go((player.i+1)%cards.length, true);
+  player = {cards, i:0, track, thumbs, paused:false};
+  $('#navPrev',p).onclick = ()=>goTo(player.i-1);
+  $('#navNext',p).onclick = ()=>goTo(player.i+1);
+
+  // 트랙에서 가장 많이 보이는 카드를 '현재'로 — 스크롤이 곧 선택
+  player.io = new IntersectionObserver(es=>{
+    let best=null;
+    es.forEach(e=>{ if(e.isIntersecting && (!best || e.intersectionRatio>best.intersectionRatio)) best=e; });
+    if(!best) return;
+    const idx = [...track.children].indexOf(best.target);
+    if(idx>=0 && idx!==player.i) setCurrent(idx);
+  },{root:track, threshold:[.55,.8,1]});
+  [...track.children].forEach(c=>player.io.observe(c));
+
+  setCurrent(0);
   mountVideo(0);
-  if(!REDUCED) schedule(); else $('#playToggle',p).textContent='▶';
+}
+
+function teardownPlayer(){
+  if(!player) return;
+  try{ player.io?.disconnect(); }catch{}
+  if(heroPlayer){ try{ heroPlayer.destroy(); }catch{} heroPlayer=null; }
+  player = null;
+}
+
+/** 현재 카드 표시 갱신(영상 마운트 포함) */
+function setCurrent(i){
+  if(!player) return;
+  player.i = i;
+  [...player.track.children].forEach((c,k)=>c.classList.toggle('on',k===i));
+  [...player.thumbs.children].forEach((t,k)=>{
+    t.classList.toggle('on',k===i);
+    if(k===i) t.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
+  });
+  const n = player.cards.length;
+  $('#counter').innerHTML = `<b>${i+1}</b> / ${n}`;
+  $('#navPrev').disabled = i<=0;
+  $('#navNext').disabled = i>=n-1;
+  player.paused = false;
+  mountVideo(i);
+}
+
+/** 썸네일·화살표로 이동 — 스크롤을 옮기면 IO 가 나머지를 처리 */
+function goTo(i){
+  if(!player) return;
+  i = Math.max(0, Math.min(player.cards.length-1, i));
+  player.track.children[i]?.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
+  setCurrent(i);
+}
+
+/** 영상 재생/일시정지 토글 */
+function toggleVideo(i){
+  if(!player || i!==player.i) return;
+  const box = player.track.children[i]?.querySelector('.vid');
+  // 아직 안 붙었으면(움직임 최소화 모드 등) 이때 붙여 재생한다
+  if(!heroPlayer){ box?.classList.remove('paused'); mountVideo(i, true); return; }
+  try{
+    const st = heroPlayer.getPlayerState?.();
+    if(st === 1){ heroPlayer.pauseVideo(); player.paused = true; box?.classList.add('paused'); }
+    else { heroPlayer.playVideo(); player.paused = false; box?.classList.remove('paused'); }
+  }catch{}
 }
 
 /* ── YouTube Player API — 자동재생을 브라우저에 명시적으로 요청한다.
@@ -539,15 +642,25 @@ window.onYouTubeIframeAPIReady = ()=>{ ytReady = true; ytQueue.splice(0).forEach
 
 let heroPlayer = null;   // 현재 히어로 카드의 YT.Player
 
-/** 활성 카드에만 플레이어를 붙인다(동시 로드 방지). 나머지는 썸네일 유지 */
-function mountVideo(i){
+/**
+ * 활성 카드에만 플레이어를 붙인다(동시 로드 방지). 나머지는 썸네일 유지.
+ * 움직임 최소화 설정(prefers-reduced-motion)이면 자동 재생하지 않고
+ * 탭했을 때만 재생한다(force=true).
+ */
+function mountVideo(i, force){
   if(!player) return;
+  if(REDUCED && !force){
+    const box = player.track.children[i]?.querySelector('.vid');
+    if(box && vidOf(box.dataset.key)) box.classList.add('paused');
+    return;
+  }
   // 이전 플레이어 정리 — 배터리·데이터 절약
   if(heroPlayer){ try{ heroPlayer.destroy(); }catch{} heroPlayer = null; }
-  [...player.stage.children].forEach((card,k)=>{
+  [...player.track.children].forEach((card,k)=>{
     const box = card.querySelector('.vid');
     if(!box) return;
-    if(k!==i){ box.querySelector('iframe,.ytslot')?.remove(); box.classList.remove('ready'); return; }
+    if(k!==i){ box.querySelector('iframe,.ytslot')?.remove();
+               box.classList.remove('ready','paused'); return; }
     const v = vidOf(box.dataset.key);
     if(!v) return;
     box.querySelector('iframe,.ytslot')?.remove();
@@ -591,51 +704,6 @@ function plainIframe(box, slot, v){
   box.insertBefore(f, box.firstChild);
 }
 
-function go(i, manual){
-  if(!player) return;
-  const {cards, stage, dots} = player;
-  stage.children[player.i]?.classList.remove('on');
-  dots.children[player.i]?.classList.remove('act');
-  dots.children[player.i]?.classList.add('done');
-  player.i = i;
-  stage.children[i]?.classList.add('on');
-  mountVideo(i);
-  [...dots.children].forEach((d,k)=>{
-    d.classList.toggle('done', k<i);
-    d.classList.remove('act');
-  });
-  if(player.playing){
-    // 애니메이션 재시작
-    const d = dots.children[i];
-    if(d){ d.classList.remove('act'); void d.offsetWidth; d.classList.add('act'); }
-    schedule();
-  }
-  if(manual && !player.playing){ dots.children[i]?.classList.add('done'); }
-}
-function schedule(){
-  if(!player) return;
-  clearTimeout(player.timer);
-  player.timer = setTimeout(()=>go((player.i+1)%player.cards.length,false), CARD_MS);
-}
-function togglePlay(){
-  if(!player) return;
-  player.playing = !player.playing;
-  const btn = $('#playToggle');
-  btn.textContent = player.playing ? '❚❚' : '▶';
-  const d = player.dots.children[player.i];
-  if(player.playing){
-    if(d){ d.classList.remove('act'); void d.offsetWidth; d.classList.add('act'); }
-    schedule();
-  }else{
-    clearTimeout(player.timer);
-    if(d){
-      // 진행 중이던 채움을 현재 위치에서 정지
-      const cs = getComputedStyle(d.querySelector('i')).transform;
-      d.classList.remove('act');
-      d.querySelector('i').style.transform = cs === 'none' ? 'scaleX(0)' : cs;
-    }
-  }
-}
 
 /* ═══════════════ 날짜 레일 ═══════════════ */
 function renderRail(){
@@ -647,7 +715,7 @@ function renderRail(){
 
   days.forEach(ds=>{
     const d = parseD(ds);
-    const b = el('button','day'+(ds===selDate?' sel':'')+(ds===D?.today?' today':'')+(has.has(ds)?' has':''));
+    const b = el('button','day'+(ds===selDate?' sel':'')+(ds===TODAY?' today':'')+(has.has(ds)?' has':''));
     b.innerHTML = `<div class="d">${d.getDate()}</div><div class="w">${DOW[d.getDay()]}</div>`;
     b.onclick = ()=>select(ds);
     rail.appendChild(b);
@@ -857,6 +925,14 @@ async function select(date){
   observeAll();
 }
 
+/** 시작 날짜 — 실제 오늘. 아직 수집 안 됐으면 데이터가 있는 가장 가까운 날 */
+function pickStartDate(){
+  if(D?.days?.[TODAY]) return TODAY;
+  const all = (D?.dates||[]).slice().sort();
+  if(!all.length) return D?.today || TODAY;
+  return all.find(d=>d>=TODAY) || all[all.length-1];
+}
+
 /** 아카이브에 dayFocus 가 없을 때 클라이언트에서 합산(관심 수업 기준) */
 function computeFocus(wods){
   const parts = new Map(), pats = new Map();
@@ -893,7 +969,7 @@ function computeFocus(wods){
   $('#gen').textContent = '수집 ' + new Date(D.generatedAt).toLocaleString('ko-KR',
     {month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
   await loadIndex();
-  await select(D.today);
+  await select(pickStartDate());
   renderStats();
   observeAll();
   setTimeout(()=>$('#loading').classList.add('off'), 180);
