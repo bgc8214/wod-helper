@@ -884,7 +884,9 @@
         "KB SWING",
         "KBS",
         "AMERICAN SWING",
-        "RUSSIAN SWING"
+        "RUSSIAN SWING",
+        "KETTLE BELL SWING",
+        "KB SWINGS"
       ],
       "parts": [
         "하체",
@@ -1256,6 +1258,305 @@
       ],
       "patterns": [
         "모빌리티"
+      ]
+    },
+    "FOAM ROLLER STRETCHING": {
+      "ko": "폼롤러 스트레칭",
+      "desc": "폼롤러로 근막을 풀며 가동범위를 넓히는 회복·준비 운동.",
+      "youtube": "https://www.youtube.com/results?search_query=foam+roller+stretching",
+      "aliases": [
+        "FORM ROLLER STRETCHING",
+        "FOAM ROLLER STRETCH",
+        "FORM ROLLER"
+      ],
+      "parts": [
+        "하체",
+        "등"
+      ],
+      "patterns": [
+        "모빌리티"
+      ],
+      "videoOf": "FOAM ROLLING"
+    },
+    "KIPPING SWING": {
+      "ko": "키핑 스윙",
+      "desc": "바에 매달려 아치·할로우를 오가며 반동을 만드는 기본 스윙. 키핑 동작의 토대.",
+      "youtube": "https://www.youtube.com/results?search_query=crossfit+kipping+swing",
+      "aliases": [
+        "KIP SWING",
+        "KIPPING"
+      ],
+      "parts": [
+        "등",
+        "코어",
+        "어깨"
+      ],
+      "patterns": [
+        "당기기",
+        "코어"
+      ]
+    },
+    "HANDSTAND HOLD": {
+      "ko": "핸드스탠드 홀드",
+      "desc": "물구나무 자세로 버티기. 어깨 안정성과 코어 유지 훈련.",
+      "youtube": "https://www.youtube.com/results?search_query=crossfit+handstand+hold",
+      "aliases": [
+        "WALL HANDSTAND HOLD",
+        "HS HOLD"
+      ],
+      "parts": [
+        "어깨",
+        "코어"
+      ],
+      "patterns": [
+        "밀기"
+      ]
+    },
+    "CAT CAMEL": {
+      "ko": "캣 카멜",
+      "desc": "네발 자세에서 등을 둥글렸다 폈다 하며 척추 가동성을 키우는 웜업.",
+      "youtube": "https://www.youtube.com/results?search_query=cat+camel+exercise",
+      "aliases": [
+        "CAT COW",
+        "CAT-CAMEL"
+      ],
+      "parts": [
+        "등",
+        "코어"
+      ],
+      "patterns": [
+        "모빌리티"
+      ]
+    },
+    "PARTNER STRETCHING": {
+      "ko": "파트너 스트레칭",
+      "desc": "둘이 짝을 지어 서로 밀고 당기며 가동범위를 넓히는 스트레칭.",
+      "youtube": "https://www.youtube.com/results?search_query=partner+stretching",
+      "aliases": [
+        "PARTNER STRETCH"
+      ],
+      "parts": [
+        "하체",
+        "등"
+      ],
+      "patterns": [
+        "모빌리티"
+      ]
+    },
+    "ARCH HOLD": {
+      "ko": "아치 홀드",
+      "desc": "엎드려 가슴과 다리를 들어 활 모양으로 버티는 후면 사슬 홀드.",
+      "youtube": "https://www.youtube.com/results?search_query=arch+hold+crossfit",
+      "aliases": [
+        "SUPERMAN HOLD"
+      ],
+      "parts": [
+        "등",
+        "코어"
+      ],
+      "patterns": [
+        "코어"
+      ]
+    },
+    "RING SUPPORT HOLD": {
+      "ko": "링 서포트 홀드",
+      "desc": "링 위에서 팔을 편 채 몸을 지지하며 버티기. 머슬업 기초.",
+      "youtube": "https://www.youtube.com/results?search_query=ring+support+hold",
+      "aliases": [
+        "SUPPORT HOLD"
+      ],
+      "parts": [
+        "어깨",
+        "팔",
+        "코어"
+      ],
+      "patterns": [
+        "밀기"
+      ]
+    },
+    "MONSTER WALK": {
+      "ko": "몬스터 워크",
+      "desc": "밴드를 다리에 걸고 옆·앞뒤로 걸으며 둔근을 활성화하는 웜업.",
+      "youtube": "https://www.youtube.com/results?search_query=monster+walk+band",
+      "aliases": [
+        "BAND MONSTER WALK",
+        "LATERAL BAND WALK"
+      ],
+      "parts": [
+        "하체"
+      ],
+      "patterns": [
+        "모빌리티",
+        "런지"
+      ]
+    },
+    "PLATE GROUND TO OVERHEAD": {
+      "ko": "플레이트 그라운드 투 오버헤드",
+      "desc": "원판을 바닥에서 머리 위까지 들어 올리는 전신 동작.",
+      "youtube": "https://www.youtube.com/results?search_query=plate+ground+to+overhead",
+      "aliases": [
+        "PLATE G2OH",
+        "GROUND TO OVERHEAD",
+        "G2OH"
+      ],
+      "parts": [
+        "어깨",
+        "하체",
+        "등"
+      ],
+      "patterns": [
+        "힌지",
+        "밀기"
+      ]
+    },
+    "PVC PASS THROUGH": {
+      "ko": "PVC 패스 스루",
+      "desc": "PVC 봉을 넓게 잡고 머리 위로 넘겼다 되돌리는 어깨 가동성 웜업.",
+      "youtube": "https://www.youtube.com/results?search_query=pvc+pass+through",
+      "aliases": [
+        "PASS THROUGH",
+        "SHOULDER PASS THROUGH"
+      ],
+      "parts": [
+        "어깨"
+      ],
+      "patterns": [
+        "모빌리티"
+      ]
+    },
+    "SINGLE LEG GLUTE BRIDGE": {
+      "ko": "싱글 레그 글루트 브릿지",
+      "desc": "한 다리로 엉덩이를 들어 올리는 둔근 활성화 운동.",
+      "youtube": "https://www.youtube.com/results?search_query=single+leg+glute+bridge",
+      "aliases": [
+        "SL GLUTE BRIDGE"
+      ],
+      "parts": [
+        "하체",
+        "코어"
+      ],
+      "patterns": [
+        "힌지"
+      ]
+    },
+    "GLUTE BRIDGE": {
+      "ko": "글루트 브릿지",
+      "desc": "누워서 엉덩이를 들어 올려 둔근을 조이는 기본 힙 힌지 운동.",
+      "youtube": "https://www.youtube.com/results?search_query=glute+bridge",
+      "aliases": [
+        "HIP BRIDGE",
+        "BRIDGE"
+      ],
+      "parts": [
+        "하체",
+        "코어"
+      ],
+      "patterns": [
+        "힌지"
+      ]
+    },
+    "BAND HIP DRIVE": {
+      "ko": "밴드 힙 드라이브",
+      "desc": "밴드 저항에 맞서 엉덩이를 앞으로 밀어내는 둔근 활성화 동작.",
+      "youtube": "https://www.youtube.com/results?search_query=band+hip+drive",
+      "aliases": [
+        "BANDED HIP DRIVE"
+      ],
+      "parts": [
+        "하체"
+      ],
+      "patterns": [
+        "힌지"
+      ]
+    },
+    "DEAD BUG": {
+      "ko": "데드 버그",
+      "desc": "누워서 반대편 팔다리를 번갈아 뻗으며 허리를 바닥에 붙여 유지하는 코어 운동.",
+      "youtube": "https://www.youtube.com/results?search_query=dead+bug+exercise",
+      "aliases": [
+        "DEADBUG"
+      ],
+      "parts": [
+        "코어"
+      ],
+      "patterns": [
+        "코어"
+      ]
+    },
+    "ACTIVE STRETCHING": {
+      "ko": "액티브 스트레칭",
+      "desc": "근육을 능동적으로 수축·이완시키며 가동범위를 넓히는 스트레칭.",
+      "youtube": "https://www.youtube.com/results?search_query=active+stretching",
+      "aliases": [
+        "ACTIVE STRETCH"
+      ],
+      "parts": [
+        "하체",
+        "어깨"
+      ],
+      "patterns": [
+        "모빌리티"
+      ]
+    },
+    "RUSSIAN TWIST": {
+      "ko": "러시안 트위스트",
+      "desc": "앉아서 상체를 뒤로 기울인 채 좌우로 비트는 복사근 운동.",
+      "youtube": "https://www.youtube.com/results?search_query=russian+twist",
+      "aliases": [
+        "RUSSIAN TWISTS"
+      ],
+      "parts": [
+        "코어"
+      ],
+      "patterns": [
+        "코어"
+      ]
+    },
+    "MEDICINE BALL SLAM": {
+      "ko": "메디신볼 슬램",
+      "desc": "메디신볼을 머리 위로 들었다 바닥에 힘껏 내리치는 전신 파워 동작.",
+      "youtube": "https://www.youtube.com/results?search_query=medicine+ball+slam",
+      "aliases": [
+        "MED BALL SLAM",
+        "BALL SLAM",
+        "SLAM BALL"
+      ],
+      "parts": [
+        "코어",
+        "등",
+        "심폐"
+      ],
+      "patterns": [
+        "힌지",
+        "유산소"
+      ]
+    },
+    "STATIC STRETCHING": {
+      "ko": "정적 스트레칭",
+      "desc": "한 자세를 유지하며 근육을 늘리는 마무리 스트레칭.",
+      "youtube": "https://www.youtube.com/results?search_query=static+stretching",
+      "aliases": [
+        "STATIC STRETCH"
+      ],
+      "parts": [
+        "하체",
+        "등"
+      ],
+      "patterns": [
+        "모빌리티"
+      ]
+    },
+    "BOX TRANSITION": {
+      "ko": "박스 트랜지션",
+      "desc": "박스를 오르내리며 자세를 전환하는 드릴. 박스 점프·스텝오버 준비.",
+      "youtube": "https://www.youtube.com/results?search_query=box+transition+drill",
+      "aliases": [],
+      "parts": [
+        "하체",
+        "심폐"
+      ],
+      "patterns": [
+        "점프"
       ]
     }
   }

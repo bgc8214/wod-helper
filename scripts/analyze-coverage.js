@@ -21,6 +21,7 @@ const arg = (f, d) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] :
 const TOP = parseInt(arg('--top', '40'), 10);
 const CATEGORY = arg('--category', null);
 const CSV = argv.includes('--csv');
+const SINCE = arg('--since', null);   // 'YYYY-MM-DD' 이후만
 
 const files = fs.readdirSync(ARCHIVE_DIR).filter(f => /^\d{4}-\d{2}\.json$/.test(f)).sort();
 
@@ -33,6 +34,7 @@ for (const f of files) {
   let a;
   try { a = JSON.parse(fs.readFileSync(path.join(ARCHIVE_DIR, f), 'utf8')); } catch { continue; }
   for (const [date, wods] of Object.entries(a.days || {})) {
+    if (SINCE && date < SINCE) continue;
     for (const w of wods) {
       if (CATEGORY != null && String(w.categoryIdx) !== String(CATEGORY)) continue;
       wodCount++;
@@ -92,7 +94,7 @@ if (CSV) {
   for (const r of ranked) console.log(`"${r.term}",${r.count},${r.first},${r.last},"${r.cats.join('|')}"`);
 } else {
   console.log(`\n분석 대상: ${files.length}개월 · WOD ${wodCount}건 · 스텝 ${stepCount}건`
-    + (CATEGORY != null ? ` (카테고리 ${CATEGORY} 만)` : ''));
+    + (CATEGORY != null ? ` (카테고리 ${CATEGORY} 만)` : '') + (SINCE ? ` (${SINCE} 이후)` : ''));
   console.log(`사전 등록 운동: ${Object.keys(dict.movements).length}개`);
   console.log(`운동 항목 ${total}건 중 매칭 ${matchedItems} (${pct(matchedItems)}%) · `
     + `미매칭 ${unmatchedItems} (${pct(unmatchedItems)}%)`);
