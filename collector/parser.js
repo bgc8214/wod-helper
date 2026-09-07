@@ -41,6 +41,9 @@ function matchSection(line, sections) {
   const norm = normalize(line).replace(/[:]/g, '').trim();
   // 헤더는 짧고, 사전에 정확히 있는 경우만 (오탐 방지)
   if (sections[norm]) return { name: norm, nameKo: sections[norm] };
+  // "A) METCON", "B SCALE" 처럼 파트 기호가 앞에 붙은 헤더
+  const m = norm.match(/^[A-F]\s+(.+)$/);
+  if (m && sections[m[1]]) return { name: m[1], nameKo: sections[m[1]] };
   return null;
 }
 
@@ -48,6 +51,41 @@ function matchSection(line, sections) {
 function isRepScheme(line) {
   const t = line.trim();
   return /^\d+(\s*[-–/]\s*\d+)+\s*$/.test(t);
+}
+
+/** 난이도 코드 → 한글 라벨 (DB 의 scaleContent_E/A/I/N 과 같은 체계) */
+const SCALE_LABEL = { E: '상급', A: '중급', I: '초급', N: '입문', RX: 'RX', 'RX+': 'RX+' };
+
+/**
+ * 난이도별 옵션 라인 판정.
+ *   "-I/N: BOX PIKE HSPU / WALL WALK / PIKE HOLD"
+ *   "- E/A: STRICT HSPU / KIPPING HSPU"
+ * 이런 줄은 운동 목록이 아니라 '스케일 옵션'이다. 운동으로 쪼개면
+ * 같은 동작이 여러 번 나열되는 것처럼 보이므로 별도로 다룬다.
+ */
+function matchScaleLine(line) {
+  // 콜론이 없는 표기도 흔하다: "E 115/80", "A 95/65, 6 MUSCLE UP", "I/N -/- 3 BMU"
+  const m = String(line).match(
+    /^[-*·•]?\s*((?:RX\+?|[EAIN])(?:\s*\/\s*(?:RX\+?|[EAIN]))*)\s*(?:[:：]\s*|\s+)(.+)$/i
+  );
+  if (!m) return null;
+  const level = m[1].toUpperCase().replace(/\s+/g, '');
+  return {
+    level,
+    label: level.split('/').map(x => SCALE_LABEL[x] || x).join('·'),
+    text: m[2].trim(),
+  };
+}
+
+/**
+ * 주석/조건 라인 판정. "*AFTER EVERY SET: 8 PULL UP" 처럼
+ * 운동 목록이 아니라 수행 조건을 적은 줄.
+ */
+function matchNote(line) {
+  const t = String(line).trim();
+  if (/^[*※★]/.test(t)) return t.replace(/^[*※★]\s*/, '');
+  if (/^(AFTER|BEFORE|EVERY)\s+(EVERY\s+)?(SET|ROUND|MIN)/i.test(t)) return t;
+  return null;
 }
 
 /** TIME CAP 추출: "TIME CAP: 16:00" / "TIME CAP 12 MIN" → {value, ko} */
@@ -105,10 +143,21 @@ function fmtMinSec(min, sec) {
 }
 
 /** 운동 라인에서 reps/note 분리 후 movement 매칭 */
+/** 항목 앞의 순번·구간 라벨 제거: "A. 10 BURPEE" → "10 BURPEE", "MIN 1: 12 CAL ROW" → "12 CAL ROW" */
+function stripItemLabel(s) {
+  return String(s)
+    .replace(/^\s*(?:PART\s+)?[A-F]\s*[).．.]\s*/i, '')
+    .replace(/^\s*MIN(?:UTE)?\s*\d+\s*[:：]\s*/i, '')
+    .replace(/^\s*\d+\s*[).]\s+/, '')
+    .trim();
+}
+
 function extractItems(line, movIndex, unmatched) {
   const items = [];
-  // '/' 로 여러 운동 병기 분리
-  const chunks = line.split('/').map(s => s.trim()).filter(Boolean);
+  // '/' 로 여러 운동을 병기하지만, "12/9 CAL ROW"(남/여 구분)처럼
+  // 숫자 사이의 '/' 는 하나의 수치이므로 나누지 않는다.
+  const chunks = line.split(/(?<!\d\s*)\/(?!\s*\d)/)
+    .map(s => stripItemLabel(s)).filter(Boolean);
   for (const chunk of chunks) {
     const noteMatch = chunk.match(/\(([^)]*)\)/);
     const note = noteMatch ? noteMatch[1].trim() : null;
@@ -122,6 +171,11 @@ function extractItems(line, movIndex, unmatched) {
     }
     if (matched) {
       items.push({ raw: chunk, reps, note, movementKey: matched.key, movement: matched.entry });
+    } else if (NON_MOVEMENT.test(norm)) {
+      // 휴식·기록 지시 등 — 운동이 아니므로 미등록 용어로 세지 않는다
+      items.push({ raw: chunk, reps, note, movementKey: null, movement: null, meta: true });
+    } else if (norm.length <= 2 || !/[A-Z가-힣]/.test(norm)) {
+      // "A", "B" 같은 순번 조각이나 "-/-" 같은 기호 — 운동도, 미등록 용어도 아니다
     } else if (norm && !/^\d+$/.test(norm)) {
       // 운동으로 보이나 사전에 없음 → unmatched
       unmatched.push(chunk);
@@ -130,6 +184,24 @@ function extractItems(line, movIndex, unmatched) {
   }
   return items;
 }
+
+/**
+ * 운동이 아닌 지시·메타 표현. 사전에 넣을 대상이 아니므로
+ * 미등록 통계에서도 제외한다(사전을 무의미하게 부풀리지 않기 위해).
+ */
+const NON_MOVEMENT = new RegExp('^(' + [
+  'REST', 'RESTS?', 'THEN', 'INTO', 'AND', 'OR', 'EACH', 'EACH SIDE', 'PER SIDE',
+  'RECORD', 'RECORD SCALE', 'SCALE', 'SCALED', 'TOTAL', 'TOTAL REPS',
+  'COMPLETED ROUNDS', 'COMPLETED ROUNDS REPS', 'ROUNDS REPS',
+  'IN TEAM', 'TEAM', 'PARTNER', 'I GO U GO', 'YOU GO I GO',
+  'NOT FOR TIME', 'FOR QUALITY', 'AS HEAVY AS POSSIBLE', 'AHAP',
+  'ELITE', 'ADVANCED', 'INTERMEDIATE', 'NOVICE', "RX'D", 'RX D', 'RX',
+  'MAX', 'MAX EFFORT', 'ME', 'ALTERNATE', 'ALTERNATING', 'EMOM', 'AMRAP',
+  'PRACTICE', 'TECHNIQUE', 'TARGET PACE', 'GOAL', 'NOTE', 'OPTION',
+  'EVERY', 'EMOM X', 'ON OFF X', 'ON OFF', 'TIME', 'WORK', 'WORK REST',
+  'IN TEAM OF', 'TEAM OF', 'BUY IN', 'CASH OUT', 'STRATEGY', 'BRIEFING',
+  'DIRECTLY INTO', 'STRAIGHT INTO', 'IMMEDIATELY INTO', 'NO REST',
+].join('|') + ')$');
 
 /** norm 텍스트가 target(정규화 별칭)을 단어경계로 포함하는가 */
 function wordIncludes(norm, target) {
@@ -157,16 +229,21 @@ function parseWod(text, dict) {
     .map(l => l.trim())
     .filter(Boolean);
 
+  const blank = (name, nameKo) => ({
+    name, nameKo, formats: [], scheme: null, timeCap: null,
+    items: [], scales: [], notes: [],
+  });
+
   let cur = null;
   const ensure = () => {
-    if (!cur) { cur = { name: 'WOD', nameKo: sectionsDict.WOD || '본운동', formats: [], scheme: null, timeCap: null, items: [] }; out.push(cur); }
+    if (!cur) { cur = blank('WOD', sectionsDict.WOD || '본운동'); out.push(cur); }
     return cur;
   };
 
   for (const line of lines) {
     const sec = matchSection(line, sectionsDict);
     if (sec) {
-      cur = { name: sec.name, nameKo: sec.nameKo, formats: [], scheme: null, timeCap: null, items: [] };
+      cur = blank(sec.name, sec.nameKo);
       out.push(cur);
       continue;
     }
@@ -175,6 +252,18 @@ function parseWod(text, dict) {
 
     const tc = matchTimeCap(line);
     if (tc) { c.timeCap = tc; continue; }
+
+    // 스케일·주석은 운동 목록보다 먼저 걸러낸다(운동으로 쪼개지지 않도록)
+    const sc = matchScaleLine(line);
+    if (sc) {
+      c.scales.push({ ...sc, items: extractItems(sc.text, movIndex, unmatched) });
+      continue;
+    }
+    const note = matchNote(line);
+    if (note) {
+      c.notes.push({ text: note, items: extractItems(note, movIndex, unmatched) });
+      continue;
+    }
 
     if (isRepScheme(line)) { c.scheme = line.replace(/\s/g, ''); continue; }
 
@@ -199,5 +288,7 @@ module.exports = {
   matchSection,
   matchFormat,
   matchTimeCap,
+  matchScaleLine,
+  matchNote,
   isRepScheme,
 };

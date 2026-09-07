@@ -92,6 +92,42 @@ test('parseWod: 사전 보강분 매칭 (ASSAULT BIKE → BIKE)', () => {
   assert.strictEqual(r.sections[0].items[0].movementKey, 'BIKE');
 });
 
+test('parseWod: 난이도 옵션 줄은 운동 목록으로 쪼개지 않는다 (9/8 실측 회귀)', () => {
+  const r = parseWod(
+    'SKILL\nHANDSTAND PROGRESSION\n' +
+    '-I/N: BOX PIKE HSPU / WALL WALK / PIKE HOLD\n' +
+    '- E/A: STRICT HSPU / KIPPING HSPU / FREESTANDING HOLD', dict);
+  const s = r.sections[0];
+  // 스킬 본체 하나만 items 로 — "-I", "- E" 같은 조각이 생기면 안 된다
+  assert.strictEqual(s.items.length, 1);
+  assert.strictEqual(s.items[0].movementKey, 'HANDSTAND PROGRESSION');
+  assert.strictEqual(s.scales.length, 2);
+  assert.strictEqual(s.scales[0].label, '초급·입문');
+  assert.strictEqual(s.scales[1].label, '상급·중급');
+  // HSPU 변형이 같은 운동으로 뭉뚱그려지지 않는다
+  const keys = s.scales.flatMap(x => x.items.map(i => i.movementKey));
+  assert.ok(keys.includes('BOX PIKE HANDSTAND PUSH UP'));
+  assert.ok(keys.includes('STRICT HANDSTAND PUSH UP'));
+  assert.ok(keys.includes('KIPPING HANDSTAND PUSH UP'));
+  assert.strictEqual(new Set(keys).size, keys.length, '같은 운동이 중복 매칭되면 안 된다');
+});
+
+test('parseWod: * 주석줄은 조건으로 보존한다', () => {
+  const r = parseWod('METCON\nFOR TIME\nWALL BALL SHOT\n*AFTER EVERY SET: 8 PULL UP', dict);
+  const s = r.sections[0];
+  assert.strictEqual(s.notes.length, 1);
+  assert.match(s.notes[0].text, /AFTER EVERY SET/);
+  assert.strictEqual(s.notes[0].items[0].movementKey, 'PULL UP');
+  // 주석이 일반 운동 항목으로 섞이지 않는다
+  assert.ok(!s.items.some(i => /AFTER EVERY/.test(i.raw)));
+});
+
+test('parseWod: TIME CAP 은 스케일 줄로 오인하지 않는다', () => {
+  const r = parseWod('METCON\nFOR TIME\nTIME CAP: 16:00', dict);
+  assert.strictEqual(r.sections[0].timeCap.value, '16:00');
+  assert.strictEqual(r.sections[0].scales.length, 0);
+});
+
 test('movements: 모든 운동에 parts/patterns 태그가 있다', () => {
   for (const [key, m] of Object.entries(dict.movements)) {
     assert.ok(Array.isArray(m.parts) && m.parts.length > 0, `${key}: parts 없음`);
