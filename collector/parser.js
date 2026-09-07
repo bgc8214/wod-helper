@@ -143,6 +143,14 @@ function fmtMinSec(min, sec) {
 }
 
 /** 운동 라인에서 reps/note 분리 후 movement 매칭 */
+/** 수치·단위 제거: "EMOM X 16" → "EMOM X", "TEAM OF 2" → "TEAM OF" */
+function stripNumbers(s) {
+  return String(s)
+    .replace(/\b\d+(?:[.,:]\d+)?\s*(?:REPS?|CAL(?:ORIES?)?|SEC(?:ONDS?)?|MIN(?:UTES?)?|M|KM|LB|KG|SETS?|ROUNDS?)?\b/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 /** 항목 앞의 순번·구간 라벨 제거: "A. 10 BURPEE" → "10 BURPEE", "MIN 1: 12 CAL ROW" → "12 CAL ROW" */
 function stripItemLabel(s) {
   return String(s)
@@ -171,7 +179,7 @@ function extractItems(line, movIndex, unmatched) {
     }
     if (matched) {
       items.push({ raw: chunk, reps, note, movementKey: matched.key, movement: matched.entry });
-    } else if (NON_MOVEMENT.test(norm)) {
+    } else if (NON_MOVEMENT.test(norm) || NON_MOVEMENT.test(stripNumbers(norm))) {
       // 휴식·기록 지시 등 — 운동이 아니므로 미등록 용어로 세지 않는다
       items.push({ raw: chunk, reps, note, movementKey: null, movement: null, meta: true });
     } else if (norm.length <= 2 || !/[A-Z가-힣]/.test(norm)) {
@@ -201,6 +209,12 @@ const NON_MOVEMENT = new RegExp('^(' + [
   'EVERY', 'EMOM X', 'ON OFF X', 'ON OFF', 'TIME', 'WORK', 'WORK REST',
   'IN TEAM OF', 'TEAM OF', 'BUY IN', 'CASH OUT', 'STRATEGY', 'BRIEFING',
   'DIRECTLY INTO', 'STRAIGHT INTO', 'IMMEDIATELY INTO', 'NO REST',
+  // 수업 성격·구성 표기 (운동 이름이 아니다)
+  'CARDIO', 'CARDIO DAY', 'ENDURANCE', 'INTERVAL', 'INTERVALS', 'MISSION',
+  'NAME WOD', 'NAMED WOD', 'HERO WOD', 'BENCHMARK', 'FOR', 'THEN OF', 'OF',
+  'SET UP', 'SETUP', 'DEMO', 'BRIEF', 'WARM', 'FINISH', 'FINISHER',
+  'BUILD TO A HEAVY', 'BUILD TO', 'BUILD', 'ENDURANCE DAY', 'CARDIO ENDURANCE',
+  'AT EACH', 'ALL OUT', 'PACE', 'EASY PACE', 'RECOVERY',
 ].join('|') + ')$');
 
 /** norm 텍스트가 target(정규화 별칭)을 단어경계로 포함하는가 */
