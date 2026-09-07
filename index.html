@@ -287,6 +287,21 @@ body::after{
   font-size:9px;color:rgba(255,255,255,.72);white-space:nowrap;overflow:hidden;
   text-overflow:ellipsis;text-shadow:0 1px 8px #000}
 
+/* 난이도별 옵션 (원문 "-I/N: …" 줄) */
+.opt{display:flex;gap:9px;align-items:flex-start;margin:7px 0;padding:7px 9px;
+  background:var(--ink3);border-radius:9px;border:1px solid var(--line)}
+.opt .lv{flex:0 0 auto;font-size:10.5px;font-weight:800;color:var(--volt);
+  background:rgba(212,255,64,.1);border:1px solid rgba(212,255,64,.3);
+  border-radius:6px;padding:2px 7px;white-space:nowrap}
+.opt .ov{display:flex;flex-wrap:wrap;gap:5px;font-size:12px;color:var(--tx2);min-width:0}
+.ochip{font-size:11.5px;padding:2px 7px;border-radius:5px;background:var(--ink4);
+  color:var(--tx2);border:1px solid var(--line)}
+/* 수행 조건 (원문 "*AFTER EVERY SET: …" 줄) */
+.note{margin:8px 0 2px;padding:7px 10px;border-radius:8px;font-size:12px;
+  color:var(--cool);background:rgba(77,163,255,.08);
+  border-left:2px solid rgba(77,163,255,.5)}
+.note b{color:var(--tx);font-weight:700}
+
 /* 스케일링 */
 .scales{margin-top:14px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .scales .tabs{display:flex;background:var(--ink3)}
@@ -779,12 +794,33 @@ function renderStep(st){
              <div class="ttl">${esc(v.title||'')} · ${esc(v.author||'')}</div>
            </div></div>`:''}`;
     }).join('');
+    // 난이도별 옵션 — 원문의 "-I/N: …" 줄
+    const opts = (s.scales||[]).map(sc=>`
+      <div class="opt">
+        <div class="lv">${esc(sc.label)}</div>
+        <div class="ov">${(sc.items||[]).length
+          ? sc.items.map(i=>{
+              const mm = mvOf(i.movementKey);
+              return `<span class="ochip">${esc(mm?mm.ko:i.raw)}</span>`;
+            }).join('')
+          : esc(sc.text)}</div>
+      </div>`).join('');
+    // 수행 조건 — 원문의 "*AFTER EVERY SET: …" 줄
+    const notes = (s.notes||[]).map(n=>{
+      let t = esc(n.text);
+      for(const i of n.items||[]){
+        const mm = mvOf(i.movementKey);
+        if(mm) t = t.replace(new RegExp(esc(i.movementKey),'i'), `<b>${esc(mm.ko)}</b>`);
+      }
+      return `<div class="note">${t}</div>`;
+    }).join('');
+
     return `<div class="sec${key?' key':''}">
         <h4>${esc(s.nameKo||s.name)}</h4>
         <div class="en">${esc(s.name)}</div>
         ${fmts}${cap}
         ${s.scheme?`<div class="scheme">${esc(s.scheme)}</div>`:''}
-        ${items}
+        ${items}${opts}${notes}
       </div>`;
   }).join('');
 
