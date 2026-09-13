@@ -44,6 +44,25 @@ function matchSection(line, sections) {
   // "A) METCON", "B SCALE" 처럼 파트 기호가 앞에 붙은 헤더
   const m = norm.match(/^[A-F]\s+(.+)$/);
   if (m && sections[m[1]]) return { name: m[1], nameKo: sections[m[1]] };
+
+  // "AGILITY / PLYO" 처럼 슬래시로 묶인 복합 헤더
+  const parts = norm.split(/\s*\/\s*/).map(s => s.trim()).filter(Boolean);
+  if (parts.length > 1 && parts.every(p => sections[p])) {
+    return { name: norm, nameKo: parts.map(p => sections[p]).join('·') };
+  }
+
+  // "BLOCK A (FOOTWORK / LADDER) - 5 SETS" 같은 블록 헤더
+  const b = String(line).trim().match(
+    /^BLOCK\s+([A-Z])\s*(?:[(［]([^)］]*)[)］])?\s*(?:[-–—]\s*(\d+)\s*SETS?)?\s*$/i
+  );
+  if (b) {
+    const desc = (b[2] || '').trim();
+    const sets = b[3] ? ` · ${b[3]}세트` : '';
+    return {
+      name: `BLOCK ${b[1].toUpperCase()}`,
+      nameKo: `블록 ${b[1].toUpperCase()}${desc ? ` · ${desc}` : ''}${sets}`,
+    };
+  }
   return null;
 }
 
@@ -160,12 +179,33 @@ function stripItemLabel(s) {
     .trim();
 }
 
+/**
+ * '/' 로 병기된 운동을 나눈다. 단 나누면 안 되는 두 경우를 지킨다.
+ *  - 숫자 사이: "12/9 CAL ROW" (남/여 구분 수치)
+ *  - 괄호 안:  "BLOCK A (FOOTWORK / LADDER)" (설명 안의 구분자)
+ */
+function splitAlternatives(line) {
+  const out = [];
+  let buf = '', depth = 0;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '(' || c === '[') depth++;
+    else if (c === ')' || c === ']') depth = Math.max(0, depth - 1);
+    if (c === '/' && depth === 0
+        && !/\d\s*$/.test(buf) && !/^\s*\d/.test(line.slice(i + 1))) {
+      out.push(buf); buf = '';
+      continue;
+    }
+    buf += c;
+  }
+  out.push(buf);
+  return out;
+}
+
 function extractItems(line, movIndex, unmatched) {
   const items = [];
-  // '/' 로 여러 운동을 병기하지만, "12/9 CAL ROW"(남/여 구분)처럼
-  // 숫자 사이의 '/' 는 하나의 수치이므로 나누지 않는다.
-  const chunks = line.split(/(?<!\d\s*)\/(?!\s*\d)/)
-    .map(s => stripItemLabel(s)).filter(Boolean);
+  const chunks = splitAlternatives(line)
+    .map(s => stripItemLabel(s)).filter(s => s.trim());
   for (const chunk of chunks) {
     const noteMatch = chunk.match(/\(([^)]*)\)/);
     const note = noteMatch ? noteMatch[1].trim() : null;
