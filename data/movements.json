@@ -64,7 +64,15 @@
     "STRENGTH / SKILL": "근력·스킬",
     "SKILL SESSION": "스킬 세션",
     "EXTRA": "추가운동",
-    "OPTIONAL": "선택운동"
+    "OPTIONAL": "선택운동",
+    "AGILITY": "민첩성",
+    "PLYO": "플라이오메트릭",
+    "PLYOMETRIC": "플라이오메트릭",
+    "FOOTWORK": "풋워크",
+    "LADDER": "래더",
+    "HURDLES": "허들",
+    "POWER": "파워",
+    "SPEED": "스피드"
   },
   "formats": {
     "FOR TIME": {
@@ -1554,6 +1562,230 @@
       "parts": [
         "하체",
         "심폐"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "A SKIP": {
+      "ko": "A 스킵",
+      "desc": "무릎을 높이 들며 리듬감 있게 뛰는 육상 드릴. 발목·고관절 탄성을 깨운다.",
+      "youtube": "https://www.youtube.com/results?search_query=a+skip+drill",
+      "aliases": [
+        "A-SKIP",
+        "ASKIP"
+      ],
+      "parts": [
+        "하체",
+        "심폐"
+      ],
+      "patterns": [
+        "점프",
+        "모빌리티"
+      ]
+    },
+    "B SKIP": {
+      "ko": "B 스킵",
+      "desc": "A 스킵에서 무릎을 편 뒤 발을 끌어내리는 동작을 더한 육상 드릴.",
+      "youtube": "https://www.youtube.com/results?search_query=b+skip+drill",
+      "aliases": [
+        "B-SKIP",
+        "BSKIP"
+      ],
+      "parts": [
+        "하체"
+      ],
+      "patterns": [
+        "점프",
+        "모빌리티"
+      ]
+    },
+    "POGO": {
+      "ko": "포고 홉",
+      "desc": "무릎을 거의 굽히지 않고 발목 탄성만으로 제자리에서 통통 뛰기.",
+      "youtube": "https://www.youtube.com/results?search_query=pogo+hop+drill",
+      "aliases": [
+        "POGO HOP",
+        "POGO JUMP",
+        "POGO HOPS"
+      ],
+      "parts": [
+        "하체"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "LADDER DRILL": {
+      "ko": "래더 드릴",
+      "desc": "바닥 사다리를 밟으며 빠른 발놀림을 익히는 민첩성 훈련.",
+      "youtube": "https://www.youtube.com/results?search_query=agility+ladder+drill",
+      "aliases": [
+        "AGILITY LADDER",
+        "LADDER"
+      ],
+      "parts": [
+        "하체",
+        "심폐"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "LADDER TWO FEET IN": {
+      "ko": "래더 투 피트 인",
+      "desc": "사다리 한 칸마다 두 발을 모두 넣었다 빼며 전진하는 기본 래더 드릴.",
+      "youtube": "https://www.youtube.com/results?search_query=ladder+two+feet+in+drill",
+      "aliases": [
+        "TWO FEET IN",
+        "LADDER TWO-FEET-IN",
+        "LADDER TWO FEET IN EACH BOX",
+        "TWO-FEET-IN"
+      ],
+      "parts": [
+        "하체",
+        "심폐"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "CARIOCA": {
+      "ko": "카리오카(크로스오버)",
+      "desc": "옆으로 이동하며 다리를 앞뒤로 교차시키는 고관절 회전 드릴.",
+      "youtube": "https://www.youtube.com/results?search_query=carioca+drill",
+      "aliases": [
+        "LADDER CROSSOVER",
+        "CROSSOVER",
+        "LADDER CROSSOVER CARIOCA",
+        "GRAPEVINE"
+      ],
+      "parts": [
+        "하체"
+      ],
+      "patterns": [
+        "모빌리티",
+        "점프"
+      ]
+    },
+    "LADDER SCISSOR HOP": {
+      "ko": "래더 시저 홉",
+      "desc": "사다리 위에서 다리를 가위처럼 앞뒤로 바꾸며 뛰는 드릴.",
+      "youtube": "https://www.youtube.com/results?search_query=ladder+scissor+hop",
+      "aliases": [
+        "SCISSOR HOP",
+        "SCISSOR HOPS"
+      ],
+      "parts": [
+        "하체",
+        "심폐"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "HURDLE HOP": {
+      "ko": "허들 홉",
+      "desc": "낮은 허들을 두 발로 연속해 넘는 플라이오 점프.",
+      "youtube": "https://www.youtube.com/results?search_query=hurdle+hop+plyometric",
+      "aliases": [
+        "HURDLE HOPS",
+        "HURDLE HOP TO STICK LANDING"
+      ],
+      "parts": [
+        "하체"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "LATERAL HURDLE HOP": {
+      "ko": "래터럴 허들 홉",
+      "desc": "허들을 좌우로 넘나들며 뛰는 측면 플라이오 동작.",
+      "youtube": "https://www.youtube.com/results?search_query=lateral+hurdle+hop",
+      "aliases": [
+        "LATERAL HURDLE HOPS",
+        "SIDE TO SIDE HURDLE HOP"
+      ],
+      "parts": [
+        "하체"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "SINGLE LEG HURDLE HOP": {
+      "ko": "싱글레그 허들 홉",
+      "desc": "한 발로 허들을 연속해 넘는 단일 다리 플라이오. 착지 안정성 훈련.",
+      "youtube": "https://www.youtube.com/results?search_query=single+leg+hurdle+hop",
+      "aliases": [
+        "SINGLE-LEG HURDLE HOP",
+        "SL HURDLE HOP"
+      ],
+      "parts": [
+        "하체"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "HURDLE JUMP": {
+      "ko": "허들 점프",
+      "desc": "허들을 두 발로 뛰어넘는 점프. 높이와 착지 제어를 함께 본다.",
+      "youtube": "https://www.youtube.com/results?search_query=hurdle+jump+plyometric",
+      "aliases": [
+        "HURDLE JUMPS",
+        "HURDLE JUMP TO POGO"
+      ],
+      "parts": [
+        "하체"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "DEPTH JUMP": {
+      "ko": "뎁스 점프",
+      "desc": "낮은 박스에서 내려선 즉시 위로 튀어오르는 반응 플라이오 동작.",
+      "youtube": "https://www.youtube.com/results?search_query=depth+jump+plyometric",
+      "aliases": [
+        "DEPTH JUMPS",
+        "DEPTH JUMP FROM LOW BOX"
+      ],
+      "parts": [
+        "하체"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "STICK LANDING": {
+      "ko": "스틱 랜딩",
+      "desc": "점프 후 흔들림 없이 한 번에 멈춰 서는 착지 제어 훈련.",
+      "youtube": "https://www.youtube.com/results?search_query=stick+the+landing+jump+drill",
+      "aliases": [
+        "STICK THE LANDING"
+      ],
+      "parts": [
+        "하체",
+        "코어"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "SINGLE LEG BOUND": {
+      "ko": "싱글레그 바운드",
+      "desc": "한 발로 멀리 튀어나가며 착지하는 수평 파워 플라이오.",
+      "youtube": "https://www.youtube.com/results?search_query=single+leg+bound+plyometric",
+      "aliases": [
+        "SINGLE-LEG BOUND",
+        "SL BOUND",
+        "BOUNDING",
+        "BOUND"
+      ],
+      "parts": [
+        "하체"
       ],
       "patterns": [
         "점프"
