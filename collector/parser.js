@@ -83,8 +83,16 @@ const SCALE_LABEL = { E: '상급', A: '중급', I: '초급', N: '입문', RX: 'R
  * 같은 동작이 여러 번 나열되는 것처럼 보이므로 별도로 다룬다.
  */
 function matchScaleLine(line) {
+  const t = String(line).trim();
+  // "Rx'd: 185/125 LB", "A: 155/105 LB", "B: 115/75 LB" — 난이도별 무게 처방
+  let rx = t.match(/^(RX'?D?|RX\+|[ABC])\s*[:：]\s*(.+)$/i);
+  if (rx) {
+    const lv = rx[1].toUpperCase().replace(/'/g, '');
+    const RXMAP = { RXD: 'RX', RX: 'RX', 'RX+': 'RX+', A: '상급', B: '중급', C: '초급' };
+    return { level: lv, label: RXMAP[lv] || lv, text: rx[2].trim() };
+  }
   // 콜론이 없는 표기도 흔하다: "E 115/80", "A 95/65, 6 MUSCLE UP", "I/N -/- 3 BMU"
-  const m = String(line).match(
+  const m = t.match(
     /^[-*·•]?\s*((?:RX\+?|[EAIN])(?:\s*\/\s*(?:RX\+?|[EAIN]))*)\s*(?:[:：]\s*|\s+)(.+)$/i
   );
   if (!m) return null;
@@ -127,6 +135,13 @@ function matchPrescription(line) {
   if (m) return { kind: 'rest', time: m[1].replace(/\s/g, ''), after: m[2].trim(), raw: t };
   m = t.match(/^REST\s+(\d+:\d+|\d+\s*(?:MIN|SEC)[A-Z]*)\s*$/i);
   if (m) return { kind: 'rest', time: m[1].replace(/\s/g, ''), raw: t };
+  // 세트/워크 구조: "6 SETS", "5 SETS", "4:00 WORK", "1:00 REST", "SET 1"
+  m = t.match(/^(\d+)\s*SETS?\s*$/i);
+  if (m) return { kind: 'sets', count: m[1], raw: t };
+  m = t.match(/^(\d+:\d+)\s+(WORK|ON|REST|OFF)\s*$/i);
+  if (m) return { kind: 'interval', time: m[1], mode: m[2].toUpperCase(), raw: t };
+  m = t.match(/^SET\s+(\d+)\s*$/i);
+  if (m) return { kind: 'setlabel', n: m[1], raw: t };
   return null;
 }
 
@@ -282,6 +297,10 @@ const NON_MOVEMENT = new RegExp('^(' + [
   'BUILD TO HEAVY SINGLE', 'BUILD TO A HEAVY SINGLE', 'HEAVY SINGLE',
   'BUILD TO HEAVY', 'FIND HEAVY', 'FIND A HEAVY', 'TOUCH AND GO',
   'TOUCH N GO', 'TNG', 'UNBROKEN', 'ASCENDING', 'DESCENDING',
+  // 마무리·잔여시간 지시문
+  'REST REMAINING TIME', 'REMAINING TIME', 'REST REMAINING',
+  'TOTAL TIME', 'MACHINE OF CHOICE', 'EASY MACHINE OF CHOICE',
+  'EASY MACHINE', 'CARDIO OF CHOICE', 'MACHINE', 'CHOICE',
 ].join('|') + ')$');
 
 /** norm 텍스트가 target(정규화 별칭)을 단어경계로 포함하는가 */

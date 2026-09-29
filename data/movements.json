@@ -72,7 +72,11 @@
     "LADDER": "래더",
     "HURDLES": "허들",
     "POWER": "파워",
-    "SPEED": "스피드"
+    "SPEED": "스피드",
+    "ACTIVE RECOVERY": "액티브 리커버리",
+    "RECOVERY": "리커버리",
+    "AEROBIC": "에어로빅",
+    "AEROBIC CAPACITY": "에어로빅 캐파"
   },
   "formats": {
     "FOR TIME": {
@@ -1867,6 +1871,137 @@
       ],
       "patterns": [
         "코어"
+      ]
+    },
+    "BAND EXTERNAL ROTATION": {
+      "ko": "밴드 익스터널 로테이션",
+      "desc": "밴드 저항으로 팔을 바깥으로 돌려 회전근개(어깨 안정근)를 활성화하는 웜업.",
+      "youtube": "https://www.youtube.com/results?search_query=band+external+rotation+shoulder",
+      "aliases": [
+        "EXTERNAL ROTATION",
+        "BAND EXTERNAL ROTATIONS"
+      ],
+      "parts": [
+        "어깨"
+      ],
+      "patterns": [
+        "모빌리티"
+      ]
+    },
+    "SCAPULAR WALL SLIDE": {
+      "ko": "스캡 월 슬라이드",
+      "desc": "벽에 등을 대고 팔을 위아래로 미끄러뜨려 견갑·흉추 가동성을 여는 웜업.",
+      "youtube": "https://www.youtube.com/results?search_query=scapular+wall+slide",
+      "aliases": [
+        "WALL SLIDE",
+        "WALL SLIDES",
+        "SCAP WALL SLIDE"
+      ],
+      "parts": [
+        "어깨",
+        "등"
+      ],
+      "patterns": [
+        "모빌리티"
+      ]
+    },
+    "SCAPULAR PULL UP": {
+      "ko": "스캡 풀업",
+      "desc": "바에 매달려 팔을 편 채 견갑만 끌어내리는 동작. 풀업·머슬업 기초.",
+      "youtube": "https://www.youtube.com/results?search_query=scapular+pull+up",
+      "aliases": [
+        "SCAP PULL UP",
+        "SCAPULA PULL UP",
+        "SCAPULAR PULL UPS"
+      ],
+      "parts": [
+        "등",
+        "어깨"
+      ],
+      "patterns": [
+        "당기기"
+      ]
+    },
+    "SCAPULAR PUSH UP": {
+      "ko": "스캡 푸시업",
+      "desc": "플랭크 자세로 견갑을 모았다 벌리는 동작. 전거근 활성화.",
+      "youtube": "https://www.youtube.com/results?search_query=scapular+push+up",
+      "aliases": [
+        "SCAP PUSH UP",
+        "SCAPULA PUSH UP",
+        "SCAPULAR PUSH UPS"
+      ],
+      "parts": [
+        "가슴",
+        "어깨",
+        "코어"
+      ],
+      "patterns": [
+        "밀기"
+      ]
+    },
+    "STRICT PRESS": {
+      "ko": "스트릭트 프레스",
+      "desc": "반동 없이 어깨 힘만으로 바벨을 머리 위로 미는 오버헤드 프레스.",
+      "youtube": "https://www.youtube.com/results?search_query=strict+press+barbell",
+      "aliases": [
+        "EMPTY BAR STRICT PRESS",
+        "OVERHEAD PRESS",
+        "SHOULDER PRESS STRICT"
+      ],
+      "parts": [
+        "어깨",
+        "팔"
+      ],
+      "patterns": [
+        "밀기"
+      ]
+    },
+    "TEMPO PUSH UP": {
+      "ko": "템포 푸시업",
+      "desc": "내려가는 동작을 천천히(템포) 조절하는 푸시업. 근지구력·자세 강화.",
+      "youtube": "https://www.youtube.com/results?search_query=tempo+push+up",
+      "aliases": [
+        "TEMPO PUSHUP"
+      ],
+      "parts": [
+        "가슴",
+        "팔",
+        "코어"
+      ],
+      "patterns": [
+        "밀기"
+      ]
+    },
+    "LATERAL STEP UP": {
+      "ko": "래터럴 스텝업",
+      "desc": "박스 옆에 서서 옆으로 올라섰다 내려오는 한 다리 하체 운동.",
+      "youtube": "https://www.youtube.com/results?search_query=lateral+step+up",
+      "aliases": [
+        "SIDE STEP UP",
+        "LATERAL STEP UPS"
+      ],
+      "parts": [
+        "하체"
+      ],
+      "patterns": [
+        "런지"
+      ]
+    },
+    "KETTLEBELL DEADLIFT": {
+      "ko": "케틀벨 데드리프트",
+      "desc": "케틀벨을 다리 사이에 두고 엉덩이 힌지로 들어올리는 기본 힌지 운동.",
+      "youtube": "https://www.youtube.com/results?search_query=kettlebell+deadlift",
+      "aliases": [
+        "KB DEADLIFT",
+        "LIGHT KB DEADLIFT"
+      ],
+      "parts": [
+        "하체",
+        "등"
+      ],
+      "patterns": [
+        "힌지"
       ]
     }
   }
