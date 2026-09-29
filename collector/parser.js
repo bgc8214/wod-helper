@@ -104,6 +104,29 @@ function matchNote(line) {
   const t = String(line).trim();
   if (/^[*※★]/.test(t)) return t.replace(/^[*※★]\s*/, '');
   if (/^(AFTER|BEFORE|EVERY)\s+(EVERY\s+)?(SET|ROUND|MIN)/i.test(t)) return t;
+  // 조건문: "ONLY IF PREVIOUS REP IS CLEAN", "IF FAILED, ...", "UNBROKEN"
+  if (/^(ONLY\s+IF|IF\b|UNLESS|WHEN)\b/i.test(t)) return t;
+  return null;
+}
+
+/**
+ * 근력 처방 라인 판정 — 운동이 아니라 세트·강도 표기다.
+ *   "5 REPS @ 45-50%"  "1 REP @ 80%"  "3x5 @ 70%"
+ *   "2:00 AFTER 50-70%"  "3:00 AFTER 80-88%"  "REST 2:00"  (세트 간 휴식)
+ * STRENGTH 세션의 % 처방을 운동으로 오인하지 않도록 별도로 담는다.
+ */
+function matchPrescription(line) {
+  const t = String(line).trim();
+  // n REP(S) @ x%  또는  n x m @ x%
+  let m = t.match(/^(\d+)\s*(?:REPS?|REP)\s*@\s*([\d\-–~%\s]+%?)\s*$/i);
+  if (m) return { kind: 'set', reps: m[1], intensity: m[2].replace(/\s/g, ''), raw: t };
+  m = t.match(/^(\d+)\s*[x×]\s*(\d+)\s*@\s*([\d\-–~%\s]+%?)\s*$/i);
+  if (m) return { kind: 'set', sets: m[1], reps: m[2], intensity: m[3].replace(/\s/g, ''), raw: t };
+  // 휴식 처방: "2:00 AFTER 50-70%", "REST 3:00", "4:00-5:00 AFTER 90%+"
+  m = t.match(/^((?:\d+:\d+)(?:\s*[-–]\s*\d+:\d+)?)\s+AFTER\s+(.+)$/i);
+  if (m) return { kind: 'rest', time: m[1].replace(/\s/g, ''), after: m[2].trim(), raw: t };
+  m = t.match(/^REST\s+(\d+:\d+|\d+\s*(?:MIN|SEC)[A-Z]*)\s*$/i);
+  if (m) return { kind: 'rest', time: m[1].replace(/\s/g, ''), raw: t };
   return null;
 }
 
@@ -255,6 +278,10 @@ const NON_MOVEMENT = new RegExp('^(' + [
   'SET UP', 'SETUP', 'DEMO', 'BRIEF', 'WARM', 'FINISH', 'FINISHER',
   'BUILD TO A HEAVY', 'BUILD TO', 'BUILD', 'ENDURANCE DAY', 'CARDIO ENDURANCE',
   'AT EACH', 'ALL OUT', 'PACE', 'EASY PACE', 'RECOVERY',
+  // 근력 세션 지시문 (운동이 아니라 수행 방식)
+  'BUILD TO HEAVY SINGLE', 'BUILD TO A HEAVY SINGLE', 'HEAVY SINGLE',
+  'BUILD TO HEAVY', 'FIND HEAVY', 'FIND A HEAVY', 'TOUCH AND GO',
+  'TOUCH N GO', 'TNG', 'UNBROKEN', 'ASCENDING', 'DESCENDING',
 ].join('|') + ')$');
 
 /** norm 텍스트가 target(정규화 별칭)을 단어경계로 포함하는가 */
@@ -285,7 +312,7 @@ function parseWod(text, dict) {
 
   const blank = (name, nameKo) => ({
     name, nameKo, formats: [], scheme: null, timeCap: null,
-    items: [], scales: [], notes: [],
+    items: [], scales: [], notes: [], prescriptions: [],
   });
 
   let cur = null;
@@ -318,6 +345,10 @@ function parseWod(text, dict) {
       c.notes.push({ text: note, items: extractItems(note, movIndex, unmatched) });
       continue;
     }
+
+    // 근력 % 처방 — 운동 매칭보다 먼저 걸러 오인 방지
+    const rx = matchPrescription(line);
+    if (rx) { c.prescriptions.push(rx); continue; }
 
     if (isRepScheme(line)) { c.scheme = line.replace(/\s/g, ''); continue; }
 

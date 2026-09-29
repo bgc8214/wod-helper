@@ -81,6 +81,10 @@ body::after{
 
 /* 포커스 요약 */
 .focusline{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:14px 0 6px}
+.stalewarn{margin:10px 0 2px;padding:9px 12px;border-radius:10px;font-size:12px;
+  line-height:1.5;color:var(--accent2,#ffd166);background:rgba(255,209,102,.08);
+  border:1px solid rgba(255,209,102,.28)}
+.stalewarn b{color:var(--tx);font-weight:700}
 .ftag{font-size:12px;font-weight:700;padding:6px 11px;border-radius:999px;
   border:1px solid var(--line2);color:var(--tx2);background:var(--ink2)}
 .ftag.lead{border-color:var(--volt);color:var(--volt);background:rgba(212,255,64,.08)}
@@ -259,6 +263,19 @@ body::after{
 .scheme{font-family:var(--disp);font-size:24px;letter-spacing:.03em;color:var(--volt);
   margin:8px 0 4px}
 .fdesc{font-size:11.5px;color:var(--tx3);line-height:1.55;margin:2px 0 8px}
+/* 근력 % 처방 표 (STRENGTH 세션) */
+.rxtable{margin:8px 0 4px;display:flex;flex-direction:column;gap:4px}
+.rxrow{display:flex;align-items:center;gap:9px}
+.rxreps{font-family:var(--mono);font-size:12px;color:var(--tx);min-width:44px;flex-shrink:0}
+.rxreps em{color:var(--tx3);font-style:normal;font-size:10px}
+.rxbar{flex:1;height:7px;background:var(--ink4);border-radius:4px;overflow:hidden;min-width:40px}
+.rxbar i{display:block;height:100%;border-radius:4px;
+  background:linear-gradient(90deg,var(--volt-dim),var(--volt))}
+.rxint{font-family:var(--mono);font-size:11.5px;color:var(--volt);min-width:58px;
+  text-align:right;flex-shrink:0}
+.rxrest{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0 2px}
+.rchip{font-size:10.5px;font-family:var(--mono);color:var(--cool);padding:3px 8px;
+  border-radius:6px;background:rgba(77,163,255,.08);border:1px solid rgba(77,163,255,.25)}
 .mv{display:flex;align-items:baseline;gap:8px;padding:7px 0;border-bottom:1px dashed var(--line)}
 .mv:last-child{border-bottom:0}
 .mv .nm{font-size:14.5px;font-weight:700}
@@ -397,6 +414,7 @@ footer .r{margin-left:auto}
       </div>
     </div>
     <div class="focusline" id="focusline"></div>
+    <div class="stalewarn" id="stalewarn" hidden></div>
     <div id="playerHost"></div>
   </section>
 </div>
@@ -425,6 +443,12 @@ const VID = window.WOD_VIDEOS || {};  // movementKey → {id,title,author,alts}
 const mvOf = key => (key && DICT[key]) || null;
 const vidOf = key => (key && VID[key]) || null;
 const thumb = id => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+/** "45-50%" → 막대 너비(%). 범위면 상한 기준 */
+const pctWidth = s => {
+  const nums = String(s).match(/\d+/g);
+  if(!nums) return 0;
+  return Math.min(100, Math.max(...nums.map(Number)));
+};
 /** 무음 자동재생 임베드. 인트로를 건너뛰고 동작 구간부터 반복 재생 */
 const embedSrc = (v, auto) => {
   const id = typeof v === 'string' ? v : v.id;
@@ -497,7 +521,26 @@ function renderHero(date, wods, dayFocus){
   }else{
     fl.appendChild(el('span','ftag','분석할 운동 정보 없음'));
   }
+
+  // 갱신 경고 배너 — 데이터가 오래됐거나 스크린샷 입력일 때
+  renderStaleWarn(date, wods);
   renderPlayer(wods);
+}
+
+/** 최신 데이터가 오늘보다 뒤처졌으면 알린다(2.0 전환으로 자동수집 공백 대비) */
+function renderStaleWarn(shownDate, wods){
+  const el2 = $('#stalewarn');
+  const last = D?.latestDataDate;
+  const isScreenshot = (wods||[]).some(w=>w.source==='screenshot');
+  let msg = '';
+  if(last && last < TODAY){
+    const gap = Math.round((parseD(TODAY)-parseD(last))/86400000);
+    msg = `⚠ 최신 등록 WOD 는 <b>${last}</b> (${gap}일 전). 이후 새 WOD 가 아직 없어요.`;
+  } else if(isScreenshot && shownDate===TODAY){
+    msg = `✎ 앱 화면에서 직접 넣은 WOD 예요.`;
+  }
+  if(msg){ el2.innerHTML = msg; el2.hidden = false; }
+  else { el2.hidden = true; }
 }
 
 /**
@@ -805,6 +848,20 @@ function renderStep(st){
             }).join('')
           : esc(sc.text)}</div>
       </div>`).join('');
+    // 근력 % 처방 — 세트는 표로, 휴식은 별도 줄로
+    const rxSets = (s.prescriptions||[]).filter(p=>p.kind==='set');
+    const rxRest = (s.prescriptions||[]).filter(p=>p.kind==='rest');
+    const rxTable = rxSets.length ? `
+      <div class="rxtable">${rxSets.map(p=>`
+        <div class="rxrow">
+          <span class="rxreps">${esc(p.sets?p.sets+'×'+p.reps:p.reps)} <em>rep</em></span>
+          <span class="rxbar"><i style="width:${pctWidth(p.intensity)}%"></i></span>
+          <span class="rxint">${esc(p.intensity)}</span>
+        </div>`).join('')}</div>` : '';
+    const rxRestHtml = rxRest.length ? `
+      <div class="rxrest">${rxRest.map(p=>
+        `<span class="rchip">휴식 ${esc(p.time)}${p.after?` · ${esc(p.after)}`:''}</span>`).join('')}</div>` : '';
+
     // 수행 조건 — 원문의 "*AFTER EVERY SET: …" 줄
     const notes = (s.notes||[]).map(n=>{
       let t = esc(n.text);
@@ -820,7 +877,7 @@ function renderStep(st){
         <div class="en">${esc(s.name)}</div>
         ${fmts}${cap}
         ${s.scheme?`<div class="scheme">${esc(s.scheme)}</div>`:''}
-        ${items}${opts}${notes}
+        ${items}${rxTable}${rxRestHtml}${opts}${notes}
       </div>`;
   }).join('');
 

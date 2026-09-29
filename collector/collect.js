@@ -69,27 +69,10 @@ async function main() {
     return;
   }
 
-  const payload = {
-    generatedAt: new Date().toISOString(),
-    box: { idx: BOX_IDX, name: boxName },
-    highlightCategory: HIGHLIGHT_CATEGORY,
-    today: dToday,
-    tomorrow: ymd(new Date(today.getTime() + 86400000)),
-    dates,
-    days,
-    dayFocus: Object.fromEntries(dates.map(d => [d, analyzeDay(days[d], HIGHLIGHT_CATEGORY)])),
-    stats: buildStats(),
-  };
-
-  writeJson(path.join(DATA_DIR, `wod-${dToday}.json`), payload);
-  writeJson(path.join(DATA_DIR, 'latest.json'), payload);
-  // file:// 로컬에서도 fetch 없이 열리도록 JS 형태로도 출력.
-  // 운동 사전은 여기 한 번만 실어 아카이브가 movementKey 로 조인하게 한다.
-  fs.writeFileSync(path.join(DATA_DIR, 'latest.js'),
-    'window.WOD_DATA = ' + JSON.stringify(payload) + ';\n' +
-    'window.WOD_DICT = ' + JSON.stringify(slimDict()) + ';\n' +
-    'window.WOD_VIDEOS = ' + JSON.stringify(loadVideos()) + ';\n');
-  writeIndex();
+  // 웹 산출물(latest.json/js + index.json) 생성은 builder 로 통일한다.
+  // 스크린샷 입력(ingest.js)과 같은 코드 경로라 형식이 어긋나지 않는다.
+  const { rebuildLatest } = require('./builder');
+  rebuildLatest({ box: { idx: BOX_IDX, name: boxName }, today: dToday, daysAhead: DAYS_AHEAD });
   log(`[collect] 저장: latest.json/js, 아카이브 ${touchedMonths.join(', ')}`);
 
   const unmatched = collectUnmatched(days);

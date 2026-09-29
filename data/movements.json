@@ -430,7 +430,7 @@
       "desc": "원판 없이 빈 바벨로 하는 프론트 스쿼트. 웜업/자세 점검용.",
       "youtube": "https://www.youtube.com/results?search_query=front+squat",
       "aliases": [
-        "EMPTY BAR"
+        "EMPTY BAR FRONT SQAUT"
       ],
       "parts": [
         "하체"
@@ -1789,6 +1789,84 @@
       ],
       "patterns": [
         "점프"
+      ]
+    },
+    "GOOD MORNING": {
+      "ko": "굿모닝",
+      "desc": "바벨을 등에 얹고 상체를 앞으로 숙였다 세우는 후면 사슬(햄스트링·허리) 운동.",
+      "youtube": "https://www.youtube.com/results?search_query=good+morning+exercise+barbell",
+      "aliases": [
+        "EMPTY BAR GOOD MORNING",
+        "BARBELL GOOD MORNING"
+      ],
+      "parts": [
+        "하체",
+        "등"
+      ],
+      "patterns": [
+        "힌지"
+      ]
+    },
+    "EMPTY BAR BACK SQUAT": {
+      "ko": "빈 바 백 스쿼트",
+      "desc": "원판 없이 빈 바벨로 하는 백 스쿼트. 웜업·자세 점검용.",
+      "youtube": "https://www.youtube.com/results?search_query=back+squat",
+      "aliases": [],
+      "parts": [
+        "하체"
+      ],
+      "patterns": [
+        "스쿼트",
+        "모빌리티"
+      ],
+      "videoOf": "BACK SQUAT"
+    },
+    "COSSACK SQUAT": {
+      "ko": "코사크 스쿼트",
+      "desc": "다리를 넓게 벌리고 한쪽으로 깊게 앉아 좌우로 옮겨가는 고관절·내전근 모빌리티 스쿼트.",
+      "youtube": "https://www.youtube.com/results?search_query=cossack+squat",
+      "aliases": [
+        "COSSACK SQUATS"
+      ],
+      "parts": [
+        "하체"
+      ],
+      "patterns": [
+        "스쿼트",
+        "모빌리티"
+      ]
+    },
+    "90/90 HIP SWITCH": {
+      "ko": "90/90 힙 스위치",
+      "desc": "앉아서 양다리를 90도로 두고 좌우로 무릎을 넘기며 고관절 회전 가동성을 여는 웜업.",
+      "youtube": "https://www.youtube.com/results?search_query=90+90+hip+switch",
+      "aliases": [
+        "90 90 HIP SWITCH",
+        "9090 HIP SWITCH",
+        "HIP SWITCH"
+      ],
+      "parts": [
+        "하체",
+        "코어"
+      ],
+      "patterns": [
+        "모빌리티"
+      ]
+    },
+    "ABMAT SIT UP": {
+      "ko": "어브맷 싯업",
+      "desc": "어브맷(허리 받침)을 대고 하는 윗몸일으키기. 가동범위를 늘려 복근을 더 자극.",
+      "youtube": "https://www.youtube.com/results?search_query=abmat+sit+up",
+      "aliases": [
+        "AB MAT SIT UP",
+        "ABMAT SITUP",
+        "ABMAT SIT-UP"
+      ],
+      "parts": [
+        "코어"
+      ],
+      "patterns": [
+        "코어"
       ]
     }
   }

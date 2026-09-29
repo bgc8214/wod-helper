@@ -61,25 +61,45 @@ wod-helper/
     com.wodhelper.collect.plist / install-launchd.sh
 ```
 
+## 데이터 입력 — 스크린샷 방식 (현재 주 통로)
+
+Stadion 이 2.0 으로 오면서 API(`api.stadion.co.kr` 의 `runQuery`)를 닫았다.
+새 서버(`admin.stadion.co.kr`)는 로그인·유료 인증을 요구하고 앱은 시스템 프록시를 우회해,
+자동 수집이 불가능하다. 그래서 **앱 화면의 WOD 를 텍스트로 넣는 방식**으로 전환했다.
+
+```bash
+# 앱에서 오늘 WOD 를 보고 텍스트를 넣는다 (stdin / 파일 / 직접)
+node scripts/ingest.js --date 2026-09-29 --cat 6 --times "09:00,12:15" < wod.txt
+node scripts/ingest.js --date 2026-09-29 --cat 6 --file wod.txt
+node scripts/ingest.js --date 2026-09-29 --cat 6 --dry --file wod.txt   # 파싱만 확인
+
+# 넣으면 파서·집중부위·영상·아카이브·latest 가 자동으로 갱신된다.
+```
+
+- `--cat` 카테고리 idx: `6` DIET/SWEAT CAMP(기본) · `3` CROSSFIT · `24` WEIGHT LIFTING · `2` RUN&LIFT · `34` MMA …
+- 복사가 막힌 화면은 **스크린샷을 그대로 주면** 텍스트로 읽어 넣을 수 있다(이미지→텍스트는 사람/AI 가 처리).
+- 미등록 운동이 나오면 `--dry` 결과에 표시된다 → `data/movements.json` 에 추가 후 `node scripts/fetch-videos.js`.
+
 ## 사용법
 
 ```bash
-npm run collect              # 수집 (오늘~+6일)
+node scripts/ingest.js ...    # WOD 입력 (위 참고) — 현재 주 통로
 npm test                     # 파서 테스트
 python3 -m http.server 8899  # 로컬 확인 → http://localhost:8899
+node scripts/fetch-videos.js # 운동 시연 영상 수집 (사전에 운동 추가 시)
 
-# 과거 데이터 백필 (일회성)
-bash scripts/backfill.sh 2021 2026
-
-# 운동 시연 영상 수집 (사전에 운동을 추가했을 때)
-node scripts/fetch-videos.js
+npm run collect              # 1.0 API 자동 수집 (판교는 2.0 전환으로 0건, 범계는 유효)
+bash scripts/backfill.sh 2021 2026   # 과거 데이터 백필 (일회성, 1.0 API)
 ```
 
-### 자동 갱신 (macOS launchd)
+### 자동 갱신 (macOS launchd) — 현재 중단됨
+
+1.0 API 자동 수집은 판교가 2.0 으로 옮겨가며 0건만 반환해 **중단했다**
+(`launchctl unload`). 범계(box 3)로 전환하면 아직 유효하다.
 
 ```bash
-bash scripts/install-launchd.sh
-launchctl unload ~/Library/LaunchAgents/com.wodhelper.collect.plist   # 해제
+bash scripts/install-launchd.sh   # 재개 (범계 등으로 전환 시)
+launchctl unload ~/Library/LaunchAgents/com.wodhelper.collect.plist   # 중단
 ```
 
 `collect.sh` 는 데이터가 **바뀐 경우에만** git push 와 `vercel deploy --prod` 를 실행한다.
