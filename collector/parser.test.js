@@ -128,6 +128,31 @@ test('parseWod: TIME CAP 은 스케일 줄로 오인하지 않는다', () => {
   assert.strictEqual(r.sections[0].scales.length, 0);
 });
 
+test('parseWod: 근력 % 처방은 운동이 아니라 처방으로 (스크린샷 회귀)', () => {
+  const r = parseWod('STRENGTH\nBUILD TO HEAVY SINGLE\n5 REPS @ 45-50%\n1 REP @ 80%', dict);
+  const s = r.sections[0];
+  assert.strictEqual(s.prescriptions.length, 2, '% 처방 2개');
+  assert.strictEqual(s.prescriptions[0].reps, '5');
+  assert.strictEqual(s.prescriptions[0].intensity, '45-50%');
+  // "5 REPS @ 45-50%" 가 미등록 운동으로 새지 않는다
+  assert.strictEqual(r.unmatched.length, 0);
+  // 실제 운동 항목은 없다 (BUILD TO HEAVY SINGLE 은 메타로만 담김)
+  assert.strictEqual(s.items.filter(i => i.movementKey || !i.meta).length, 0);
+});
+
+test('parseWod: 세트 간 휴식 처방 + 조건문', () => {
+  const r = parseWod('STRENGTH\n2:00 AFTER 50-70%\nONLY IF PREVIOUS REP IS CLEAN', dict);
+  const s = r.sections[0];
+  assert.strictEqual(s.prescriptions[0].kind, 'rest');
+  assert.strictEqual(s.prescriptions[0].time, '2:00');
+  assert.match(s.notes[0].text, /ONLY IF/);
+});
+
+test('parseWod: EMPTY BAR GOOD MORNING 은 굿모닝 (프론트스쿼트 오탐 아님)', () => {
+  const r = parseWod('WARM UP\nEMPTY BAR GOOD MORNING', dict);
+  assert.strictEqual(r.sections[0].items[0].movementKey, 'GOOD MORNING');
+});
+
 test('movements: 모든 운동에 parts/patterns 태그가 있다', () => {
   for (const [key, m] of Object.entries(dict.movements)) {
     assert.ok(Array.isArray(m.parts) && m.parts.length > 0, `${key}: parts 없음`);
