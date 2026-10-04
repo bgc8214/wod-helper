@@ -142,6 +142,12 @@ function matchPrescription(line) {
   if (m) return { kind: 'interval', time: m[1], mode: m[2].toUpperCase(), raw: t };
   m = t.match(/^SET\s+(\d+)\s*$/i);
   if (m) return { kind: 'setlabel', n: m[1], raw: t };
+  // "n ROUNDS", "n RFT" — 라운드 수 지시
+  m = t.match(/^(\d+)\s*ROUNDS?\s*$/i);
+  if (m) return { kind: 'rounds', count: m[1], raw: t };
+  // "E2MOM X 7", "E3MOM X 5" — Every n Min On the Min
+  m = t.match(/^E(\d+)MOM(?:\s*[x×]\s*(\d+))?\s*$/i);
+  if (m) return { kind: 'interval', time: `${m[1]}:00`, mode: 'EMOM', count: m[2] || null, raw: t };
   return null;
 }
 
@@ -301,6 +307,10 @@ const NON_MOVEMENT = new RegExp('^(' + [
   'REST REMAINING TIME', 'REMAINING TIME', 'REST REMAINING',
   'TOTAL TIME', 'MACHINE OF CHOICE', 'EASY MACHINE OF CHOICE',
   'EASY MACHINE', 'CARDIO OF CHOICE', 'MACHINE', 'CHOICE',
+  // 강도·스케일 지시문
+  'BUILD TO MODERATE HEAVY', 'BUILD TO MODERATE', 'MODERATE HEAVY', 'MODERATE',
+  'DB SCALE', 'KB SCALE', 'BB SCALE', 'WEIGHT', 'LOAD', 'EACH LEG', 'EACH ARM',
+  'SIDE', 'PER LEG', 'PER ARM', 'E SIDE',
 ].join('|') + ')$');
 
 /** norm 텍스트가 target(정규화 별칭)을 단어경계로 포함하는가 */
