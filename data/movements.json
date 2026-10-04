@@ -76,7 +76,10 @@
     "ACTIVE RECOVERY": "액티브 리커버리",
     "RECOVERY": "리커버리",
     "AEROBIC": "에어로빅",
-    "AEROBIC CAPACITY": "에어로빅 캐파"
+    "AEROBIC CAPACITY": "에어로빅 캐파",
+    "GYMNASTICS SKILL": "체조 스킬",
+    "GYMNASTIC SKILL": "체조 스킬",
+    "GYM SKILL": "체조 스킬"
   },
   "formats": {
     "FOR TIME": {
@@ -625,7 +628,8 @@
       "desc": "엎드린 자세에서 발을 벽에 대고 걸어 올라가 물구나무에 가까워지는 동작.",
       "youtube": "https://www.youtube.com/results?search_query=crossfit+wall+walk",
       "aliases": [
-        "WALL WALKS"
+        "WALL WALKS",
+        "WALL WALK PROGRESSION"
       ],
       "parts": [
         "어깨",
@@ -2002,6 +2006,137 @@
       ],
       "patterns": [
         "힌지"
+      ]
+    },
+    "BEAR CRAWL": {
+      "ko": "베어 크롤",
+      "desc": "네발로 무릎을 띄운 채 기어가는 전신 코어·어깨 안정 웜업.",
+      "youtube": "https://www.youtube.com/results?search_query=bear+crawl",
+      "aliases": [
+        "BEAR CRAWLS"
+      ],
+      "parts": [
+        "코어",
+        "어깨",
+        "하체"
+      ],
+      "patterns": [
+        "모빌리티"
+      ]
+    },
+    "STRICT KNEE RAISE": {
+      "ko": "스트릭트 니 레이즈",
+      "desc": "바에 매달려 반동 없이 무릎을 들어올리는 코어 운동. 토투바 전 단계.",
+      "youtube": "https://www.youtube.com/results?search_query=strict+knee+raise+hanging",
+      "aliases": [
+        "KNEE RAISE",
+        "HANGING KNEE RAISE",
+        "STRICT KNEE RAISES"
+      ],
+      "parts": [
+        "코어"
+      ],
+      "patterns": [
+        "코어",
+        "당기기"
+      ]
+    },
+    "HOLLOW ROCK": {
+      "ko": "할로우 락",
+      "desc": "할로우 자세로 앞뒤로 흔드는 코어 운동.",
+      "youtube": "https://www.youtube.com/results?search_query=hollow+rock",
+      "aliases": [
+        "HOLLOW ROCKS"
+      ],
+      "parts": [
+        "코어"
+      ],
+      "patterns": [
+        "코어"
+      ]
+    },
+    "SIDE PLANK": {
+      "ko": "사이드 플랭크",
+      "desc": "옆으로 누워 한 팔로 몸을 일직선으로 버티는 측면 코어 홀드.",
+      "youtube": "https://www.youtube.com/results?search_query=side+plank",
+      "aliases": [
+        "SIDE PLANKS"
+      ],
+      "parts": [
+        "코어"
+      ],
+      "patterns": [
+        "코어"
+      ]
+    },
+    "HAND RELEASE PUSH UP": {
+      "ko": "핸드 릴리즈 푸시업",
+      "desc": "가슴이 바닥에 닿을 때 손을 떼었다 미는 푸시업. 가동범위 전체를 강제.",
+      "youtube": "https://www.youtube.com/results?search_query=hand+release+push+up",
+      "aliases": [
+        "HR PUSH UP",
+        "HAND RELEASE PUSHUP",
+        "HRPU"
+      ],
+      "parts": [
+        "가슴",
+        "팔",
+        "코어"
+      ],
+      "patterns": [
+        "밀기"
+      ]
+    },
+    "SHOULDER TAP": {
+      "ko": "숄더 탭",
+      "desc": "플랭크·파이크 자세로 버티며 손으로 반대 어깨를 번갈아 터치.",
+      "youtube": "https://www.youtube.com/results?search_query=shoulder+tap+exercise",
+      "aliases": [
+        "SHOULDER TAPS",
+        "SHOULDER TAP FROM BOX"
+      ],
+      "parts": [
+        "어깨",
+        "코어"
+      ],
+      "patterns": [
+        "밀기",
+        "코어"
+      ]
+    },
+    "WALL FACING HANDSTAND HOLD": {
+      "ko": "월 페이싱 핸드스탠드 홀드",
+      "desc": "벽을 보고 물구나무로 버티는 홀드. 가장 수직에 가까운 핸드스탠드 기초.",
+      "youtube": "https://www.youtube.com/results?search_query=wall+facing+handstand+hold",
+      "aliases": [
+        "WALL FACING HANDSTAND",
+        "NOSE TO WALL HANDSTAND"
+      ],
+      "parts": [
+        "어깨",
+        "코어"
+      ],
+      "patterns": [
+        "밀기"
+      ],
+      "videoOf": "HANDSTAND HOLD"
+    },
+    "DUMBBELL SHOULDER TO OVERHEAD": {
+      "ko": "덤벨 숄더 투 오버헤드",
+      "desc": "덤벨을 어깨에서 머리 위로 올리는 모든 방식(프레스·푸시·저크 자유).",
+      "youtube": "https://www.youtube.com/results?search_query=dumbbell+shoulder+to+overhead",
+      "aliases": [
+        "DB SHOULDER TO OVERHEAD",
+        "DOUBLE DB SHOULDER TO OVERHEAD",
+        "DB S2O",
+        "DB STO"
+      ],
+      "parts": [
+        "어깨",
+        "팔"
+      ],
+      "patterns": [
+        "밀기"
       ]
     }
   }
