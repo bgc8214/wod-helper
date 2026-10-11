@@ -2138,6 +2138,96 @@
       "patterns": [
         "밀기"
       ]
+    },
+    "SINGLE LEG RDL": {
+      "ko": "싱글레그 RDL",
+      "desc": "한 다리로 균형을 잡고 상체를 숙여 반대 다리를 뒤로 뻗는 루마니안 데드리프트. 햄스트링·균형.",
+      "youtube": "https://www.youtube.com/results?search_query=single+leg+rdl",
+      "aliases": [
+        "SL RDL",
+        "DB SINGLE LEG RDL",
+        "SINGLE LEG DEADLIFT",
+        "SINGLE LEG ROMANIAN DEADLIFT"
+      ],
+      "parts": [
+        "하체",
+        "등"
+      ],
+      "patterns": [
+        "힌지"
+      ]
+    },
+    "WINDMILL": {
+      "ko": "윈드밀",
+      "desc": "한 손에 중량을 머리 위로 든 채 반대쪽으로 상체를 숙이는 코어·고관절 모빌리티 동작.",
+      "youtube": "https://www.youtube.com/results?search_query=kettlebell+windmill",
+      "aliases": [
+        "KB WINDMILL",
+        "DB WINDMILL"
+      ],
+      "parts": [
+        "코어",
+        "어깨",
+        "하체"
+      ],
+      "patterns": [
+        "모빌리티",
+        "코어"
+      ]
+    },
+    "TURKISH GET UP": {
+      "ko": "터키시 겟업",
+      "desc": "누운 자세에서 중량을 머리 위로 든 채 단계별로 일어섰다 다시 눕는 전신 안정성 동작.",
+      "youtube": "https://www.youtube.com/results?search_query=turkish+get+up",
+      "aliases": [
+        "TGU",
+        "TURKISH GETUP"
+      ],
+      "parts": [
+        "어깨",
+        "코어",
+        "하체"
+      ],
+      "patterns": [
+        "밀기",
+        "코어"
+      ]
+    },
+    "FARMER CARRY": {
+      "ko": "파머스 캐리",
+      "desc": "양손에 중량을 들고 걷는 그립·코어·전신 운동.",
+      "youtube": "https://www.youtube.com/results?search_query=farmers+carry",
+      "aliases": [
+        "FARMERS CARRY",
+        "FARMER'S CARRY",
+        "FARMER WALK",
+        "FARMERS WALK"
+      ],
+      "parts": [
+        "코어",
+        "등",
+        "하체"
+      ],
+      "patterns": [
+        "유산소"
+      ]
+    },
+    "PLATE BEAR HUG CARRY": {
+      "ko": "플레이트 베어허그 캐리",
+      "desc": "원판을 가슴에 끌어안고 걷는 캐리. 코어·상체 긴장 유지.",
+      "youtube": "https://www.youtube.com/results?search_query=plate+bear+hug+carry",
+      "aliases": [
+        "BEAR HUG CARRY",
+        "PLATE CARRY"
+      ],
+      "parts": [
+        "코어",
+        "등",
+        "하체"
+      ],
+      "patterns": [
+        "유산소"
+      ]
     }
   }
 }
