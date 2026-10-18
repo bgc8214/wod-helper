@@ -1222,7 +1222,13 @@
       "youtube": "https://www.youtube.com/results?search_query=crossfit+dumbbell+snatch",
       "aliases": [
         "DB SNATCH",
-        "SINGLE ARM DB SNATCH"
+        "SINGLE ARM DB SNATCH",
+        "ALTERNATING SINGLE DB HANG SNATCH",
+        "SINGLE DB HANG SNATCH",
+        "DB HANG SNATCH",
+        "ALTERNATING DB SNATCH",
+        "HANG DB SNATCH",
+        "ALTERNATING SINGLE DB SNATCH"
       ],
       "parts": [
         "하체",
@@ -1686,7 +1692,8 @@
       "patterns": [
         "점프",
         "모빌리티"
-      ]
+      ],
+      "searchQuery": "a skip running drill technique"
     },
     "B SKIP": {
       "ko": "B 스킵",
@@ -2339,7 +2346,8 @@
       "patterns": [
         "유산소",
         "모빌리티"
-      ]
+      ],
+      "searchQuery": "lateral side shuffle agility drill"
     },
     "SNAP DOWN": {
       "ko": "스냅 다운",
@@ -2355,7 +2363,8 @@
       ],
       "patterns": [
         "점프"
-      ]
+      ],
+      "searchQuery": "snap down athletic drill landing"
     },
     "SCISSOR STEP": {
       "ko": "시저 스텝",
@@ -2370,7 +2379,8 @@
       ],
       "patterns": [
         "점프"
-      ]
+      ],
+      "searchQuery": "agility ladder scissor feet drill"
     },
     "LADDER TWO IN": {
       "ko": "래더 투 인",
@@ -2387,7 +2397,8 @@
       ],
       "patterns": [
         "점프"
-      ]
+      ],
+      "searchQuery": "agility ladder two feet in drill"
     },
     "FORWARD STEP OVER": {
       "ko": "포워드 스텝 오버",
@@ -2401,7 +2412,8 @@
       ],
       "patterns": [
         "점프"
-      ]
+      ],
+      "searchQuery": "hurdle forward step over agility drill"
     },
     "LATERAL STEP OVER": {
       "ko": "래터럴 스텝 오버",
@@ -2415,7 +2427,8 @@
       ],
       "patterns": [
         "점프"
-      ]
+      ],
+      "searchQuery": "lateral hurdle step over agility drill"
     },
     "TUCK JUMP OVER": {
       "ko": "턱 점프 오버",
@@ -2428,7 +2441,8 @@
       ],
       "patterns": [
         "점프"
-      ]
+      ],
+      "searchQuery": "tuck jump plyometric how to"
     },
     "VERTICAL JUMP": {
       "ko": "버티컬 점프",
@@ -2442,7 +2456,8 @@
       ],
       "patterns": [
         "점프"
-      ]
+      ],
+      "searchQuery": "vertical jump landing stick drill"
     },
     "LATERAL JUMP": {
       "ko": "래터럴 점프",
@@ -2456,7 +2471,8 @@
       ],
       "patterns": [
         "점프"
-      ]
+      ],
+      "searchQuery": "lateral bound jump stick landing drill"
     },
     "MIRROR DRILL": {
       "ko": "미러 드릴",
@@ -2469,7 +2485,8 @@
       ],
       "patterns": [
         "유산소"
-      ]
+      ],
+      "searchQuery": "agility mirror drill change of direction"
     },
     "BOUNCE": {
       "ko": "바운스",
@@ -2483,7 +2500,8 @@
       ],
       "patterns": [
         "점프"
-      ]
+      ],
+      "searchQuery": "pogo bounce ankle hops drill"
     },
     "ACCELERATION": {
       "ko": "가속 러닝",
@@ -2499,7 +2517,8 @@
       ],
       "patterns": [
         "유산소"
-      ]
+      ],
+      "searchQuery": "acceleration sprint drill"
     },
     "STRICT CHIN UP": {
       "ko": "스트릭트 친업",

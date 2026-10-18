@@ -78,13 +78,16 @@ async function verify(id) {
   } catch { return null; }
 }
 
-function score(v, key) {
+function score(v, key, custom) {
   let s = 0;
-  if (PREFERRED.some(re => re.test(v.author || ''))) s += 10;
+  // 커스텀 쿼리(민첩성 드릴 등)면 크로스핏 채널 가산점을 빼고 제목 적합도로만 고른다
+  if (!custom && PREFERRED.some(re => re.test(v.author || ''))) s += 10;
   const t = (v.title || '').toLowerCase();
-  const words = key.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+  // 커스텀 쿼리면 쿼리 단어 기준, 아니면 운동명 기준으로 제목 일치도
+  const base = (custom || key).toLowerCase();
+  const words = base.split(/\s+/).filter(w => w.length > 2 && !/crossfit|drill|how|exercise/.test(w));
   s += words.filter(w => t.includes(w)).length * 2;
-  if (/how to|technique|demo|tutorial|standards/i.test(t)) s += 3;
+  if (/how to|technique|demo|tutorial|standards|drill/i.test(t)) s += 3;
   if (/wod|workout of the day|vlog|competition|highlight/i.test(t)) s -= 2;
   return s;
 }
@@ -103,7 +106,8 @@ async function main() {
     done++;
     if (out[key] && !FORCE) continue;
     const m = dict.movements[key];
-    const query = `${key} crossfit how to`;
+    // 사전에 searchQuery 가 있으면 그걸 우선(민첩성 드릴 등 '크로스핏' 강제가 해로운 경우)
+    const query = m.searchQuery || `${key} crossfit how to`;
     try {
       const ids = await searchIds(query);
       if (!ids.length) { failed.push(key); continue; }
@@ -116,7 +120,7 @@ async function main() {
       }
       if (!verified.length) { failed.push(key); continue; }
 
-      verified.sort((a, b) => score(b, key) - score(a, key));
+      verified.sort((a, b) => score(b, key, m.searchQuery) - score(a, key, m.searchQuery));
       const best = verified[0];
       const len = await lengthOf(best.id);
       out[key] = {
