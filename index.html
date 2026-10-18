@@ -264,6 +264,9 @@ body::after{
   color:var(--tx);text-transform:uppercase}
 .sec .en{font-family:var(--mono);font-size:9.5px;color:var(--tx3);letter-spacing:.1em;
   margin-bottom:9px;text-transform:uppercase}
+.secdesc{font-size:11.5px;color:var(--tx2);line-height:1.55;margin:-4px 0 11px;
+  padding:7px 10px;background:var(--ink3);border-radius:8px;
+  border-left:2px solid var(--volt-dim)}
 .fmt{display:inline-block;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:7px;
   background:rgba(255,77,32,.1);color:var(--flame);border:1px solid rgba(255,77,32,.28);
   margin:0 5px 6px 0}
@@ -883,6 +886,7 @@ function renderStep(st){
     return `<div class="sec${key?' key':''}">
         <h4>${esc(s.nameKo||s.name)}</h4>
         <div class="en">${esc(s.name)}</div>
+        ${s.desc?`<div class="secdesc">${esc(s.desc)}</div>`:''}
         ${fmts}${cap}
         ${s.scheme?`<div class="scheme">${esc(s.scheme)}</div>`:''}
         ${items}${rxTable}${rxRestHtml}${opts}${notes}

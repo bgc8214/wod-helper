@@ -153,6 +153,20 @@ test('parseWod: EMPTY BAR GOOD MORNING 은 굿모닝 (프론트스쿼트 오탐 
   assert.strictEqual(r.sections[0].items[0].movementKey, 'GOOD MORNING');
 });
 
+test('parseWod: 섹션 설명(desc)이 결과에 담긴다', () => {
+  const r = parseWod('METCON\nFOR TIME\n10 BURPEE', dict);
+  const sec = r.sections.find(s => s.name === 'METCON');
+  assert.ok(sec, 'METCON 섹션 존재');
+  assert.ok(sec.desc && /대사|메인|심폐/.test(sec.desc), 'METCON 설명이 담겨야 함');
+});
+
+test('parseWod: E3MOM X 5 SETS 인터벌 인식', () => {
+  const r = parseWod('STRENGTH\nE3MOM X 5 SETS\n5 PULL UP', dict);
+  const rx = r.sections[0].prescriptions.find(p => p.kind === 'interval');
+  assert.ok(rx, '인터벌 처방 존재');
+  assert.strictEqual(rx.time, '3:00');
+});
+
 test('movements: 모든 운동에 parts/patterns 태그가 있다', () => {
   for (const [key, m] of Object.entries(dict.movements)) {
     assert.ok(Array.isArray(m.parts) && m.parts.length > 0, `${key}: parts 없음`);

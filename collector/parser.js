@@ -36,19 +36,27 @@ function buildMovementIndex(movements) {
   return idx;
 }
 
-/** 라인이 섹션 헤더면 {name, nameKo} 반환, 아니면 null */
+/** 섹션 사전 값에서 한글 라벨 추출 (문자열 또는 {ko,desc} 호환) */
+function secKo(v) { return (v && typeof v === 'object') ? v.ko : v; }
+function secDesc(v) { return (v && typeof v === 'object') ? (v.desc || null) : null; }
+
+/** 라인이 섹션 헤더면 {name, nameKo, desc} 반환, 아니면 null */
 function matchSection(line, sections) {
   const norm = normalize(line).replace(/[:]/g, '').trim();
   // 헤더는 짧고, 사전에 정확히 있는 경우만 (오탐 방지)
-  if (sections[norm]) return { name: norm, nameKo: sections[norm] };
+  if (sections[norm]) return { name: norm, nameKo: secKo(sections[norm]), desc: secDesc(sections[norm]) };
   // "A) METCON", "B SCALE" 처럼 파트 기호가 앞에 붙은 헤더
   const m = norm.match(/^[A-F]\s+(.+)$/);
-  if (m && sections[m[1]]) return { name: m[1], nameKo: sections[m[1]] };
+  if (m && sections[m[1]]) return { name: m[1], nameKo: secKo(sections[m[1]]), desc: secDesc(sections[m[1]]) };
 
   // "AGILITY / PLYO" 처럼 슬래시로 묶인 복합 헤더
   const parts = norm.split(/\s*\/\s*/).map(s => s.trim()).filter(Boolean);
   if (parts.length > 1 && parts.every(p => sections[p])) {
-    return { name: norm, nameKo: parts.map(p => sections[p]).join('·') };
+    return {
+      name: norm,
+      nameKo: parts.map(p => secKo(sections[p])).join('·'),
+      desc: secDesc(sections[parts[0]]),
+    };
   }
 
   // "BLOCK A (FOOTWORK / LADDER) - 5 SETS" 같은 블록 헤더
@@ -145,8 +153,8 @@ function matchPrescription(line) {
   // "n ROUNDS", "n RFT" — 라운드 수 지시
   m = t.match(/^(\d+)\s*ROUNDS?\s*$/i);
   if (m) return { kind: 'rounds', count: m[1], raw: t };
-  // "E2MOM X 7", "E3MOM X 5" — Every n Min On the Min
-  m = t.match(/^E(\d+)MOM(?:\s*[x×]\s*(\d+))?\s*$/i);
+  // "E2MOM X 7", "E3MOM X 5 SETS", "E5MOM X 4 SETS" — Every n Min On the Min
+  m = t.match(/^E(\d+)MOM(?:\s*[x×]\s*(\d+)\s*(?:SETS?)?)?\s*$/i);
   if (m) return { kind: 'interval', time: `${m[1]}:00`, mode: 'EMOM', count: m[2] || null, raw: t };
   return null;
 }
@@ -312,6 +320,9 @@ const NON_MOVEMENT = new RegExp('^(' + [
   'DB SCALE', 'KB SCALE', 'BB SCALE', 'PLATE SCALE', 'BARBELL SCALE', 'SCALE OPTION',
   'WEIGHT', 'LOAD', 'EACH LEG', 'EACH ARM',
   'SIDE', 'PER LEG', 'PER ARM', 'E SIDE',
+  // 팀 WOD 수행 지시
+  'SPLIT REPS AS NEEDED', 'SPLIT REPS', 'ONE ATHLETE WORKS AT A TIME',
+  'ONE ATHLETE WORKS', 'SPLIT AS NEEDED', 'SPLIT CARRY AS NEEDED',
 ].join('|') + ')$');
 
 /** norm 텍스트가 target(정규화 별칭)을 단어경계로 포함하는가 */
@@ -340,21 +351,21 @@ function parseWod(text, dict) {
     .map(l => l.trim())
     .filter(Boolean);
 
-  const blank = (name, nameKo) => ({
-    name, nameKo, formats: [], scheme: null, timeCap: null,
+  const blank = (name, nameKo, desc) => ({
+    name, nameKo, desc: desc || null, formats: [], scheme: null, timeCap: null,
     items: [], scales: [], notes: [], prescriptions: [],
   });
 
   let cur = null;
   const ensure = () => {
-    if (!cur) { cur = blank('WOD', sectionsDict.WOD || '본운동'); out.push(cur); }
+    if (!cur) { cur = blank('WOD', secKo(sectionsDict.WOD) || '본운동', secDesc(sectionsDict.WOD)); out.push(cur); }
     return cur;
   };
 
   for (const line of lines) {
     const sec = matchSection(line, sectionsDict);
     if (sec) {
-      cur = blank(sec.name, sec.nameKo);
+      cur = blank(sec.name, sec.nameKo, sec.desc);
       out.push(cur);
       continue;
     }

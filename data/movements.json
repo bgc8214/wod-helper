@@ -24,62 +24,158 @@
     ]
   },
   "sections": {
-    "WARM UP": "웜업",
-    "WARMUP": "웜업",
-    "MOBILITY": "모빌리티",
-    "SKILL": "스킬",
-    "TECHNIQUE": "테크닉",
+    "WARM UP": {
+      "ko": "웜업",
+      "desc": "본운동 전 몸을 데우고 가동범위를 여는 준비운동. 부상 예방·수행력↑"
+    },
+    "WARMUP": {
+      "ko": "웜업",
+      "desc": "본운동 전 몸을 데우고 가동범위를 여는 준비운동. 부상 예방·수행력↑"
+    },
+    "MOBILITY": {
+      "ko": "모빌리티",
+      "desc": "관절 가동범위를 넓히는 스트레칭·동작. 자세와 깊이를 좋게."
+    },
+    "SKILL": {
+      "ko": "스킬",
+      "desc": "기술 동작을 연습하는 구간. 무게·강도보다 '자세와 감각'이 목적."
+    },
+    "TECHNIQUE": {
+      "ko": "테크닉",
+      "desc": "동작 테크닉을 다듬는 구간."
+    },
     "PRACTICE": "연습",
-    "STRENGTH": "근력(스트렝스)",
-    "STRENGTH & SKILL": "근력·스킬",
+    "STRENGTH": {
+      "ko": "근력(스트렝스)",
+      "desc": "무거운 중량으로 근력을 키우는 구간. 세트·휴식을 지켜 힘을 올린다."
+    },
+    "STRENGTH & SKILL": {
+      "ko": "근력·스킬",
+      "desc": "근력과 기술을 함께 — 무게를 올리며 자세도 다듬는 구간."
+    },
     "STRENGTH & SKILL PRACTICE": "근력·스킬 연습",
     "GYMNASTIC": "체조(짐내스틱)",
     "WEIGHTLIFTING": "역도",
-    "METCON": "메트콘(대사운동)",
-    "CONDITIONING": "컨디셔닝",
+    "METCON": {
+      "ko": "메트콘(대사운동)",
+      "desc": "대사 컨디셔닝(Metabolic Conditioning). 심폐·전신을 몰아치는 '그날의 메인 운동'. 보통 시간 재기(FOR TIME)나 제한시간 최대 라운드(AMRAP)."
+    },
+    "CONDITIONING": {
+      "ko": "컨디셔닝",
+      "desc": "심폐·체력을 끌어올리는 컨디셔닝 구간."
+    },
     "WOD": "본운동",
-    "ACCESSORY": "보조운동",
+    "ACCESSORY": {
+      "ko": "보조운동",
+      "desc": "보조운동. 주 운동을 받쳐주는 작은 근육·약점 보강."
+    },
     "ACCESSORY WORKOUT": "보조운동",
-    "FINISHER": "피니셔",
-    "CORE": "코어",
+    "FINISHER": {
+      "ko": "피니셔",
+      "desc": "마무리 번아웃 구간. 짧고 강하게 남은 힘을 쏟는다."
+    },
+    "CORE": {
+      "ko": "코어",
+      "desc": "복부·몸통 코어를 집중하는 구간."
+    },
     "MMA TRAINING": "MMA 트레이닝",
     "SCALE": "스케일 옵션",
     "RECORD": "기록",
     "RECORD SCALE": "기록·스케일",
     "STRATEGY BRIEFING": "전략 브리핑",
     "MAIN WOD": "본운동",
-    "DYNAMIC WARM UP": "웜업",
-    "COOL DOWN": "쿨다운",
-    "COOLDOWN": "쿨다운",
-    "BUY IN": "바이인(시작 과제)",
+    "DYNAMIC WARM UP": {
+      "ko": "웜업",
+      "desc": "움직이며 하는 준비운동. 관절·근육을 깨운다."
+    },
+    "COOL DOWN": {
+      "ko": "쿨다운",
+      "desc": "정리운동. 심박을 낮추고 근육을 풀어준다."
+    },
+    "COOLDOWN": {
+      "ko": "쿨다운",
+      "desc": "정리운동. 심박을 낮추고 근육을 풀어준다."
+    },
+    "BUY IN": {
+      "ko": "바이인(시작 과제)",
+      "desc": "본운동 시작 전 먼저 끝내야 하는 과제."
+    },
     "BUYIN": "바이인(시작 과제)",
-    "CASH OUT": "캐시아웃(마무리 과제)",
+    "CASH OUT": {
+      "ko": "캐시아웃(마무리 과제)",
+      "desc": "본운동 뒤 마무리로 하는 과제."
+    },
     "CASHOUT": "캐시아웃(마무리 과제)",
     "NOVICE": "입문 옵션",
     "INTERMEDIATE": "초급 옵션",
     "ADVANCED": "중급 옵션",
     "ELITE": "상급 옵션",
-    "ACCESSORY WORK": "보조운동",
+    "ACCESSORY WORK": {
+      "ko": "보조운동",
+      "desc": "보조운동. 주 운동을 받쳐주는 작은 근육·약점 보강."
+    },
     "SKILL & STRENGTH": "스킬·근력",
-    "STRENGTH / SKILL": "근력·스킬",
+    "STRENGTH / SKILL": {
+      "ko": "근력·스킬",
+      "desc": "근력과 기술을 함께 — 무게를 올리며 자세도 다듬는 구간."
+    },
     "SKILL SESSION": "스킬 세션",
     "EXTRA": "추가운동",
     "OPTIONAL": "선택운동",
-    "AGILITY": "민첩성",
-    "PLYO": "플라이오메트릭",
-    "PLYOMETRIC": "플라이오메트릭",
+    "AGILITY": {
+      "ko": "민첩성",
+      "desc": "민첩성 훈련. 빠른 발놀림·방향전환."
+    },
+    "PLYO": {
+      "ko": "플라이오메트릭",
+      "desc": "점프·착지로 폭발력을 키우는 플라이오메트릭."
+    },
+    "PLYOMETRIC": {
+      "ko": "플라이오메트릭",
+      "desc": "점프·착지로 폭발력(파워)을 키우는 플라이오메트릭."
+    },
     "FOOTWORK": "풋워크",
     "LADDER": "래더",
     "HURDLES": "허들",
     "POWER": "파워",
     "SPEED": "스피드",
-    "ACTIVE RECOVERY": "액티브 리커버리",
-    "RECOVERY": "리커버리",
+    "ACTIVE RECOVERY": {
+      "ko": "액티브 리커버리",
+      "desc": "가볍게 움직이며 회복하는 날. 낮은 강도로 혈류를 돈다."
+    },
+    "RECOVERY": {
+      "ko": "리커버리",
+      "desc": "회복 구간. 낮은 강도로 몸을 푼다."
+    },
     "AEROBIC": "에어로빅",
     "AEROBIC CAPACITY": "에어로빅 캐파",
     "GYMNASTICS SKILL": "체조 스킬",
     "GYMNASTIC SKILL": "체조 스킬",
-    "GYM SKILL": "체조 스킬"
+    "GYM SKILL": "체조 스킬",
+    "LADDER DRILL": {
+      "ko": "래더 드릴",
+      "desc": "바닥 사다리로 빠른 발놀림을 익히는 풋워크 드릴."
+    },
+    "HURDLE DRILL": {
+      "ko": "허들 드릴",
+      "desc": "허들을 넘나들며 하는 점프·민첩성 드릴."
+    },
+    "GYMNASTIC STRENGTH": {
+      "ko": "체조 근력",
+      "desc": "맨몸(체조) 기반 근력 구간. 턱걸이·딥 등 자기 체중을 다룬다."
+    },
+    "GYMNASTICS STRENGTH": {
+      "ko": "체조 근력",
+      "desc": "맨몸(체조) 기반 근력 구간. 턱걸이·딥 등 자기 체중을 다룬다."
+    },
+    "REACTION": {
+      "ko": "반응",
+      "desc": "신호에 빠르게 반응하는 훈련."
+    },
+    "CHANGE OF DIRECTION": {
+      "ko": "방향 전환",
+      "desc": "방향을 빠르게 바꾸는 민첩성 훈련."
+    }
   },
   "formats": {
     "FOR TIME": {
@@ -2227,6 +2323,248 @@
       ],
       "patterns": [
         "유산소"
+      ]
+    },
+    "SIDE SHUFFLE": {
+      "ko": "사이드 셔플",
+      "desc": "옆으로 빠르게 미끄러지듯 이동하는 민첩성 드릴.",
+      "youtube": "https://www.youtube.com/results?search_query=side+shuffle+drill",
+      "aliases": [
+        "LATERAL SHUFFLE"
+      ],
+      "parts": [
+        "하체",
+        "심폐"
+      ],
+      "patterns": [
+        "유산소",
+        "모빌리티"
+      ]
+    },
+    "SNAP DOWN": {
+      "ko": "스냅 다운",
+      "desc": "선 자세에서 재빨리 쪼그려 앉으며 바닥을 치는 동작. 착지·반응 준비.",
+      "youtube": "https://www.youtube.com/results?search_query=snap+down+drill",
+      "aliases": [
+        "SNAP DOWN + STICK",
+        "SNAP DOWNS"
+      ],
+      "parts": [
+        "하체",
+        "코어"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "SCISSOR STEP": {
+      "ko": "시저 스텝",
+      "desc": "사다리에서 다리를 가위처럼 앞뒤로 바꾸는 풋워크 드릴.",
+      "youtube": "https://www.youtube.com/results?search_query=ladder+scissor+step",
+      "aliases": [
+        "LADDER SCISSOR STEP"
+      ],
+      "parts": [
+        "하체",
+        "심폐"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "LADDER TWO IN": {
+      "ko": "래더 투 인",
+      "desc": "사다리 한 칸에 양발을 번갈아 넣는 기본 풋워크(전진/측면).",
+      "youtube": "https://www.youtube.com/results?search_query=ladder+two+feet+in",
+      "aliases": [
+        "TWO IN FORWARD",
+        "TWO IN LATERAL",
+        "TWO IN"
+      ],
+      "parts": [
+        "하체",
+        "심폐"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "FORWARD STEP OVER": {
+      "ko": "포워드 스텝 오버",
+      "desc": "허들을 앞으로 넘어 지나가는 드릴.",
+      "youtube": "https://www.youtube.com/results?search_query=hurdle+forward+step+over",
+      "aliases": [
+        "STEP OVER FORWARD"
+      ],
+      "parts": [
+        "하체"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "LATERAL STEP OVER": {
+      "ko": "래터럴 스텝 오버",
+      "desc": "허들을 옆으로 넘나드는 드릴.",
+      "youtube": "https://www.youtube.com/results?search_query=hurdle+lateral+step+over",
+      "aliases": [
+        "SIDE STEP OVER"
+      ],
+      "parts": [
+        "하체"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "TUCK JUMP OVER": {
+      "ko": "턱 점프 오버",
+      "desc": "무릎을 당겨 허들을 뛰어넘는 점프.",
+      "youtube": "https://www.youtube.com/results?search_query=tuck+jump+over+hurdle",
+      "aliases": [],
+      "parts": [
+        "하체",
+        "심폐"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "VERTICAL JUMP": {
+      "ko": "버티컬 점프",
+      "desc": "수직으로 최대한 높이 뛰어 착지를 제어하는 플라이오.",
+      "youtube": "https://www.youtube.com/results?search_query=vertical+jump+plyometric",
+      "aliases": [
+        "VERTICAL JUMP + STICK"
+      ],
+      "parts": [
+        "하체"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "LATERAL JUMP": {
+      "ko": "래터럴 점프",
+      "desc": "좌우로 뛰어 착지를 멈추는 측면 플라이오.",
+      "youtube": "https://www.youtube.com/results?search_query=lateral+jump+plyometric",
+      "aliases": [
+        "LATERAL JUMP + STICK"
+      ],
+      "parts": [
+        "하체"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "MIRROR DRILL": {
+      "ko": "미러 드릴",
+      "desc": "상대의 움직임을 거울처럼 따라가며 반응·방향전환을 훈련.",
+      "youtube": "https://www.youtube.com/results?search_query=mirror+drill+agility",
+      "aliases": [],
+      "parts": [
+        "하체",
+        "심폐"
+      ],
+      "patterns": [
+        "유산소"
+      ]
+    },
+    "BOUNCE": {
+      "ko": "바운스",
+      "desc": "발목 탄성으로 가볍게 튀는 리듬 점프(포고 유사).",
+      "youtube": "https://www.youtube.com/results?search_query=pogo+bounce+drill",
+      "aliases": [
+        "BOUNCES"
+      ],
+      "parts": [
+        "하체"
+      ],
+      "patterns": [
+        "점프"
+      ]
+    },
+    "ACCELERATION": {
+      "ko": "가속 러닝",
+      "desc": "짧은 거리를 폭발적으로 가속하는 스프린트 드릴.",
+      "youtube": "https://www.youtube.com/results?search_query=acceleration+sprint+drill",
+      "aliases": [
+        "ACCEL",
+        "SPRINT ACCELERATION"
+      ],
+      "parts": [
+        "하체",
+        "심폐"
+      ],
+      "patterns": [
+        "유산소"
+      ]
+    },
+    "STRICT CHIN UP": {
+      "ko": "스트릭트 친업",
+      "desc": "손바닥을 몸쪽으로(언더그립) 반동 없이 당기는 턱걸이.",
+      "youtube": "https://www.youtube.com/results?search_query=strict+chin+up",
+      "aliases": [
+        "CHIN UP",
+        "STRICT CHINUP"
+      ],
+      "parts": [
+        "등",
+        "팔"
+      ],
+      "patterns": [
+        "당기기"
+      ]
+    },
+    "SEATED DB PRESS": {
+      "ko": "시티드 덤벨 프레스",
+      "desc": "앉아서 덤벨을 머리 위로 미는 어깨 프레스.",
+      "youtube": "https://www.youtube.com/results?search_query=seated+dumbbell+press",
+      "aliases": [
+        "SEATED DUMBBELL PRESS"
+      ],
+      "parts": [
+        "어깨",
+        "팔"
+      ],
+      "patterns": [
+        "밀기"
+      ]
+    },
+    "RENEGADE ROW": {
+      "ko": "레니게이드 로우",
+      "desc": "플랭크 자세로 덤벨을 번갈아 당기는 코어+등 복합 동작.",
+      "youtube": "https://www.youtube.com/results?search_query=renegade+row",
+      "aliases": [
+        "PUSH UP TO RENEGADE ROW",
+        "DB RENEGADE ROW"
+      ],
+      "parts": [
+        "등",
+        "코어",
+        "팔"
+      ],
+      "patterns": [
+        "당기기"
+      ]
+    },
+    "DOUBLE DB DEADLIFT JUMP": {
+      "ko": "더블 덤벨 데드리프트 점프",
+      "desc": "양손 덤벨로 데드리프트 후 점프까지 연결하는 파워 동작.",
+      "youtube": "https://www.youtube.com/results?search_query=dumbbell+deadlift+jump",
+      "aliases": [
+        "DB DEADLIFT JUMP",
+        "DEADLIFT JUMP"
+      ],
+      "parts": [
+        "하체",
+        "등",
+        "심폐"
+      ],
+      "patterns": [
+        "힌지",
+        "점프"
       ]
     }
   }
